@@ -24,6 +24,16 @@ protected:
 	string morada;
 
 public:
+	static int ultimoId;
+	int id;
+
+
+
+	Pessoa(string nome, string contacto,string morada, int id);
+
+
+
+
 
 	/**
 	 * @brief Construtor de Pessoa
@@ -104,6 +114,10 @@ public:
 	 * @param morada String com o novo valor de morada para alterar .
 	 */
 	void setMorada(string morada);
+
+
+
+	//	friend ostream& operator<<(ostream &out, const Pessoa &Pess); TODO ver se é preciso
 
 };
 

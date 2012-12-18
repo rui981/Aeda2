@@ -1,13 +1,26 @@
 #include "Pessoa.h"
 
+int Pessoa::ultimoId = 0;
+
 
 Pessoa::Pessoa (string nome, string contacto, string morada){
+	id= ultimoId;
+	ultimoId++;
 	this->nome=nome;
 	this->contacto=contacto;
 	this->morada=morada;
 
 }
 
+
+Pessoa::Pessoa(string nome, string contacto,string morada, int id){
+	this->nome=nome;
+	this->contacto=contacto;
+	this->morada=morada;
+	this->id=id;
+	ultimoId= id;
+
+}
 
 
 Pessoa::~Pessoa(){

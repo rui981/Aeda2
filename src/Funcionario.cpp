@@ -11,6 +11,20 @@ Funcionario::Funcionario(string nome, string contacto, string morada, string tip
 
 }
 
+Funcionario::Funcionario(string nome, string contacto, string morada, string tipo, double salario, int horasExtra, int id):
+	Pessoa( nome, contacto, morada,  id){
+		this->tipo=tipo;
+		this->salario=salario;
+		this->horasExtra=horasExtra;
+
+}
+
+
+
+int Funcionario::getId(){
+return id;
+
+}
 
 Funcionario::~Funcionario(){
 

@@ -36,6 +36,9 @@ class Cliente : public Pessoa {
 		 *
 		 */
 	Cliente(string nome, string contacto, string morada);
+	Cliente(string nome, string contacto, string morada, int id);
+
+	int getId();
 
 
 	/**
@@ -55,7 +58,9 @@ class Cliente : public Pessoa {
 		return true;
 	}
 
-
+	/* TODO VER SE ISTO E PRA MANTER
+	vector<Veiculo*> getVeiculos() const;
+	void setVeiculos (vector <Veiculo*> Veiculos);*/
 
 	/**@brief Overload de operador ostream
 		 *

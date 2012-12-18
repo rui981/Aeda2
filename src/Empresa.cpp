@@ -135,6 +135,7 @@ void Empresa::escreveClientes() {
 
 	if (ficheiro.is_open()) {
 		for (unsigned int i = 0; i < clientes.size(); i++) {
+			ficheiro << clientes[i]->getId() << endl;
 			ficheiro << clientes[i]->getNome() << endl;
 			ficheiro << clientes[i]->getContacto() << endl;
 			ficheiro << clientes[i]->getMorada();
@@ -152,6 +153,7 @@ void Empresa::escreveFuncionarios() {
 
 	if (ficheiro.is_open()) {
 		for (unsigned int i = 0; i < funcionarios.size(); i++) {
+			ficheiro << funcionarios[i]->getId()<< endl;
 			ficheiro << funcionarios[i]->getNome() << endl;
 			ficheiro << funcionarios[i]->getContacto() << endl;
 			ficheiro << funcionarios[i]->getMorada() << endl;
@@ -321,12 +323,14 @@ void Empresa::leClientes() {
 	fstream ficheiro;
 
 	string nome, morada, contactoe;
-	string contacto;
+	string contacto, idS;
+	int id;
 
 	ficheiro.open("Clientes.txt", ios::in);
 
 	if (ficheiro.is_open()) {
 		while (!ficheiro.eof()) {
+			getline(ficheiro, idS);
 			getline(ficheiro, nome);
 			if (nome == " ") {
 				//Se o ficheiro estiver vazio lança excepção
@@ -335,8 +339,8 @@ void Empresa::leClientes() {
 			}
 			getline(ficheiro, contacto);
 			getline(ficheiro, morada);
-
-			Cliente * ce = new Cliente(nome, contacto, morada);
+			id= atoi(idS.c_str());
+			Cliente * ce = new Cliente(nome, contacto, morada, id);
 			clientes.push_back(ce);
 
 		}
@@ -354,14 +358,14 @@ void Empresa::leFuncionarios() {
 	fstream ficheiro;
 	int id, horasExtra, tmi;
 	string nome, morada, contacto, tipo, salarioe, horasExtrae, temp, marca,
-			modelo, matricula;
+			modelo, matricula, idS;
 	double salario;
 
 	ficheiro.open("Funcionarios.txt", fstream::in);
 
 	if (ficheiro.is_open()) {
 		while (!ficheiro.eof()) {
-
+			getline(ficheiro, idS);
 			getline(ficheiro, nome);
 			if (nome == " ")
 				return;
@@ -382,9 +386,9 @@ void Empresa::leFuncionarios() {
 
 			salario = atof(salarioe.c_str());
 			horasExtra = atoi(horasExtrae.c_str());
-
+			id= atoi(idS.c_str());
 			Funcionario * ce = new Funcionario(nome, contacto, morada, tipo,
-					salario, horasExtra);
+					salario, horasExtra, id);
 			ce->setVeiculos(vTemp);
 			funcionarios.push_back(ce);
 

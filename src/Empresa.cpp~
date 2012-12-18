@@ -3,6 +3,7 @@
 #include <fstream>
 #include <stdlib.h>
 
+#define SIZETEXTO 20
 
 
 Empresa::Empresa() {
@@ -13,7 +14,7 @@ Empresa::Empresa() {
 		cout << "Leitura de clientes falhou" << endl; 
 	}
 	catch (FicheiroVazio){
-		cout << "Nada para ler no ficheiro :(" << endl; 
+		cout << "Nada para ler no ficheiro " << endl;
 	}
 	
 	leFuncionarios();
@@ -41,8 +42,7 @@ void Empresa::clear() {
 }
 
 void Empresa::pause() {
-	cout << "prima qualquer tecla para continuar" << endl;
-	cin.ignore(1000, '\n');
+	cout << "Prima enter para continuar" << endl;
 	cin.get();
 }
 
@@ -152,6 +152,7 @@ void Empresa::escreveFuncionarios() {
 
 	if (ficheiro.is_open()) {
 		for (unsigned int i = 0; i < funcionarios.size(); i++) {
+			ficheiro << funcionarios[i]->getId()<< endl;
 			ficheiro << funcionarios[i]->getNome() << endl;
 			ficheiro << funcionarios[i]->getContacto() << endl;
 			ficheiro << funcionarios[i]->getMorada() << endl;
@@ -321,12 +322,14 @@ void Empresa::leClientes() {
 	fstream ficheiro;
 
 	string nome, morada, contactoe;
-	string contacto;
+	string contacto, idS;
+	int id;
 
 	ficheiro.open("Clientes.txt", ios::in);
 
 	if (ficheiro.is_open()) {
 		while (!ficheiro.eof()) {
+			getline(ficheiro, idS);
 			getline(ficheiro, nome);
 			if (nome == " ") {
 				//Se o ficheiro estiver vazio lança excepção
@@ -335,8 +338,8 @@ void Empresa::leClientes() {
 			}
 			getline(ficheiro, contacto);
 			getline(ficheiro, morada);
-
-			Cliente * ce = new Cliente(nome, contacto, morada);
+			id= atoi(idS.c_str());
+			Cliente * ce = new Cliente(nome, contacto, morada, id);
 			clientes.push_back(ce);
 
 		}
@@ -354,14 +357,14 @@ void Empresa::leFuncionarios() {
 	fstream ficheiro;
 	int id, horasExtra, tmi;
 	string nome, morada, contacto, tipo, salarioe, horasExtrae, temp, marca,
-			modelo, matricula;
+			modelo, matricula, idS;
 	double salario;
 
 	ficheiro.open("Funcionarios.txt", fstream::in);
 
 	if (ficheiro.is_open()) {
 		while (!ficheiro.eof()) {
-
+			getline(ficheiro, idS);
 			getline(ficheiro, nome);
 			if (nome == " ")
 				return;
@@ -382,9 +385,9 @@ void Empresa::leFuncionarios() {
 
 			salario = atof(salarioe.c_str());
 			horasExtra = atoi(horasExtrae.c_str());
-
+			id= atoi(idS.c_str());
 			Funcionario * ce = new Funcionario(nome, contacto, morada, tipo,
-					salario, horasExtra);
+					salario, horasExtra, id);
 			ce->setVeiculos(vTemp);
 			funcionarios.push_back(ce);
 
@@ -565,8 +568,11 @@ void Empresa::menu() {
 	
 	
 		try {		
-			cin >> op;
-				
+
+			getline(cin, ope);
+			op=atoi(ope.c_str());
+
+
 			if(op < 0 || op > 4) {
 					OFBOpcoes o;
 					throw o;
@@ -577,15 +583,12 @@ void Empresa::menu() {
 			cout << "Opção Invalida" << endl;
 			pause();
 			clear();
-			//break;		
-			//menu();
-			//exit(-1);
 		}
 
 		
 		switch (op) {
 		case 1: {
-
+			string opfe;
 			clear();
 			cout << "**************Menu Funcionarios***********************"
 					<< endl << endl;
@@ -597,23 +600,23 @@ void Empresa::menu() {
 			cout << "Remover Veiculo a Funcionario--------6" << endl;
 			cout << "Sair---------------------------------0" << endl;
 			try{	
-				cin >> opF;
+				getline(cin, opfe);
+				opF=atoi(opfe.c_str());
 				
 					if(opF < 0 || opF > 6) {
 						OFBOpcoes ofb;
 						throw ofb;
 					}
 				}
-			//Fix me break
+
 			catch (OpcoesExc) {
 				cout << "Opçao invalida" << endl;
 				pause();
 				clear();
 				break;
-				menu();
+
 			} 
 								
-			cin.ignore(1000, '\n');
 
 			string nome, contacto, morada, tipo, salarioe;
 			double salario;
@@ -627,35 +630,34 @@ void Empresa::menu() {
 				try {
 					cout << "Insira nome de Funcionario" << endl;
 					getline(cin, nome);
-						if(nome.size() > 5){
+						if(nome.size() > SIZETEXTO){
 						fNomeOFB nb;
 						throw nb;
 						}
 									
 					cout << "Insira contacto de Funcionario" << endl;
 					getline(cin, contacto);
-						if(contacto.size() > 5){
+						if(contacto.size() > SIZETEXTO){
 						fContactoOFB cb;
 						throw cb;
 						}
 					
 					cout << "Insira morada de Funcionario" << endl;
 					getline(cin, morada);
-					if(morada.size() > 5){
-						//TODO size de cada coisa 
+					if(morada.size() > SIZETEXTO){
 						fMoradaOFB mb;
 						throw mb;
 						}
 					cout << "Insira tipo de Funcionario" << endl;
 					getline(cin, tipo);
-					if(tipo.size() > 5){
+					if(tipo.size() > SIZETEXTO){
 						fTipoOFB tb;
 						throw tb;
 						}
 					cout << "Insira salario de Funcionario" << endl;
 					getline(cin, salarioe);
 					
-					if(salarioe.size() > 5){
+					if(salarioe.size() > SIZETEXTO){
 						fSalarioOFB sb;
 						throw sb;
 						}
@@ -665,7 +667,7 @@ void Empresa::menu() {
 						pause();
 						clear();
 						break;
-						menu();
+
 					}
 					
 				try{					
@@ -682,6 +684,7 @@ void Empresa::menu() {
 					break;
 					menu();
 				}
+				string confirmacaoe;
 
 					Funcionario * funcTemp = new Funcionario(nome, contacto,
 							morada, tipo, salario, horasExtra);
@@ -692,7 +695,9 @@ void Empresa::menu() {
 					cout << "Sim----------------------1" << endl;
 					cout << "Nao----------------------2" << endl;
 					try {
-						cin >> confirmacao;
+						getline(cin, confirmacaoe);
+						confirmacao = atoi(confirmacaoe.c_str());
+
 						if(confirmacao < 1 || confirmacao > 2) {
 							OFBOpcoes of;
 							throw of;
@@ -708,13 +713,18 @@ void Empresa::menu() {
 						
 					if (confirmacao == 1) {
 						novoFuncionario(funcTemp);
+						cout << "Funcionario adicionado com sucesso!" << endl;
+						pause();
 					} else {
 						cout << "Deseja inserir os dados de novo?" << endl;
 						cout << "Nao-----------1" << endl;
 						cout << "Sim-----------2" << endl;
 						
 						try {
-						cin >> confirmacao;
+
+							getline(cin, confirmacaoe);
+							confirmacao = atoi(confirmacaoe.c_str());
+
 						if(confirmacao < 1 || confirmacao > 2) {
 							OFBOpcoes of;
 							throw of;
@@ -725,9 +735,7 @@ void Empresa::menu() {
 							pause();
 							clear();
 							break;
-							menu();
 						}	
-						cin.ignore(1000, '\n');
 					}
 
 				} while (confirmacao != 1);
@@ -737,6 +745,7 @@ void Empresa::menu() {
 			case 2: {
 				clear();
 				int numeracao, conf;
+				string numeracaoe, confe;
 				do {
 					for (unsigned int i = 0; i < funcionarios.size(); i++) {
 						cout << i + 1 << "   " << funcionarios[i]->getNome()
@@ -745,7 +754,9 @@ void Empresa::menu() {
 					cout << "Qual dos funcionarios deseja eliminar?" << endl;
 					
 					try {
-						cin >> numeracao;
+						getline(cin, numeracaoe);
+						numeracao = atoi(numeracaoe.c_str());
+
 						if(numeracao < 1 || numeracao > funcionarios.size()) {
 							FuncionarioInvalido iv;
 							throw iv;
@@ -756,7 +767,6 @@ void Empresa::menu() {
 							pause();
 							clear();
 							break;
-							menu();
 						}
 
 					clear();
@@ -768,7 +778,9 @@ void Empresa::menu() {
 					cout << "Nao --------------------------------------2"
 							<< endl;
 					try {
-						cin >> conf;
+						getline(cin, confe);
+						conf = atoi(confe.c_str());
+
 						if(conf < 1 || conf > 2){
 							OFBOpcoes o;
 							throw o;
@@ -779,10 +791,11 @@ void Empresa::menu() {
 						pause();
 						clear();
 						break;
-						menu();
+
 					}
 						
 					if (conf == 1) {
+
 						removeFuncionario(numeracao - 1);
 						cout << "Funcionario apagado do sistema" << endl;
 						pause();
@@ -793,7 +806,9 @@ void Empresa::menu() {
 						cout << "Sim-----------2" << endl;
 						
 					try {
-						cin >> conf;
+						getline(cin, confe);
+						conf = atoi(confe.c_str());
+
 						if(conf < 1 || conf > 2){
 							OFBOpcoes o;
 							throw o;
@@ -804,7 +819,6 @@ void Empresa::menu() {
 							pause();
 							clear();
 							break;
-							menu();
 						}
 
 					}
@@ -820,6 +834,7 @@ void Empresa::menu() {
 
 			case 4: {
 				clear();
+				string numeracaoe, confe;
 				int numeracao, conf;
 				for (unsigned int i = 0; i < funcionarios.size(); i++) {
 					cout << i + 1 << "   " << funcionarios[i]->getNome()
@@ -828,7 +843,8 @@ void Empresa::menu() {
 
 				cout << "Qual dos funcionarios deseja examinar?" << endl;
 			try {
-				cin >> numeracao;
+				getline(cin, numeracaoe);
+				numeracao = atoi(numeracaoe.c_str());
 				
 				if(numeracao < 1 || numeracao > funcionarios.size()) {
 					FuncionarioInvalido iv;
@@ -840,7 +856,7 @@ void Empresa::menu() {
 				pause();
 				clear();
 				break;
-				//menu();
+				
 			}
 
 				cout << *(funcionarios[numeracao - 1]) << endl;
@@ -850,12 +866,15 @@ void Empresa::menu() {
 			case 5: { //adiciona veiculos a um funcionario
 				clear();
 				adicionaVeiculoFuncionario();
-				pause();
+
 			}break;
 			
 			case 6: {
-				//TODO remove veiculo a func.
-				} break;
+				clear();
+				removeVeiculoFuncionario();
+				pause();
+
+			} break;
 
 
 			case 0: {
@@ -867,6 +886,7 @@ void Empresa::menu() {
 		}
 			break;
 		case 2: {
+			string opCe;
 			clear();
 			cout << "**************Menu Clientes***********************" << endl
 					<< endl;
@@ -877,7 +897,9 @@ void Empresa::menu() {
 			cout << "Sair---------------------------------0" << endl;
 			
 			try {
-				cin >> opC;
+				getline(cin, opCe);
+				opC = atoi(opCe.c_str());
+
 				
 				if(opC < 0 || opC > 4) {
 					OFBOpcoes of;
@@ -889,35 +911,33 @@ void Empresa::menu() {
 				pause();
 				clear();
 				break;
-				menu();
 			}
-				
-			cin.ignore(1000, '\n');
-		
+
 			switch (opC) {
 				
 			case 1: {
 				int confirmacao;
+				string confirmacaoe;
 				do {
 				 try{
 					clear();
-					cout << "insira nome do Cliente" << endl;
-					getline(cin, nomeCliente);					
-					if(nomeCliente.size() > 5) {
+					cout << "Insira nome do Cliente" << endl;
+					getline(cin, nomeCliente);
+					if(nomeCliente.size() > SIZETEXTO) {
 						cNomeOFB of;
 						throw of;
 					} 
 					
 					cout << "Insira morada do CLiente" << endl;
 					getline(cin, moradaCliente);
-					if(moradaCliente.size() > 5) {
+					if(moradaCliente.size() > SIZETEXTO) {
 						cMoradaOFB om;
 						throw om;
 					}
 					
 					cout << "Insira contacto cliente" << endl;
 					getline(cin, contactoCliente);
-					if(contactoCliente.size() > 5) {
+					if(contactoCliente.size() > SIZETEXTO) {
 						cContactoOFB oc;
 						throw oc;
 					}
@@ -927,7 +947,6 @@ void Empresa::menu() {
 					pause();
 					clear();
 					break;
-					menu(); 
 				}
 								
 					Cliente * cliTemp = new Cliente(nomeCliente,
@@ -940,7 +959,9 @@ void Empresa::menu() {
 					cout << "Nao-----------2" << endl;
 					
 					try {
-						cin >> confirmacao;
+						getline(cin, confirmacaoe);
+						confirmacao = atoi(confirmacaoe.c_str());
+
 						if(confirmacao < 1 || confirmacao > 2) {
 							OFBOpcoes o;
 							throw o;
@@ -950,7 +971,6 @@ void Empresa::menu() {
 						cout << "Opçao Invalida" << endl;
 					}
 											
-					cin.ignore(1000, '\n');
 
 					if (confirmacao == 1) {
 						novoCliente(cliTemp);
@@ -959,10 +979,12 @@ void Empresa::menu() {
 					} else {
 						cout << "Deseja inserir os dados de novo?" << endl;
 						cout << "Nao-----------1" << endl;
-						cout << "Ŝim-----------2" << endl;
+						cout << "Sim-----------2" << endl;
 						
 						try {
-							cin >> confirmacao;
+							getline(cin, confirmacaoe);
+							confirmacao = atoi(confirmacaoe.c_str());
+
 							if(confirmacao < 1 || confirmacao > 2) {
 								OFBOpcoes o;
 								throw o;
@@ -973,7 +995,6 @@ void Empresa::menu() {
 							pause();
 							clear();
 							break;
-							menu();
 						}
 
 						pause();
@@ -987,6 +1008,8 @@ void Empresa::menu() {
 
 				clear();
 				int numeracao, conf;
+				string numeracaoe, confe;
+
 				do {
 					for (unsigned int i = 0; i < clientes.size(); i++) {
 						cout << i + 1 << "   " << clientes[i]->getNome()
@@ -995,7 +1018,9 @@ void Empresa::menu() {
 
 					cout << "Qual dos clientes deseja eliminar?" << endl;
 				try {
-						cin >> numeracao;
+						getline(cin, numeracaoe);
+						numeracao = atoi(numeracaoe.c_str());
+
 						if(numeracao < 1 || numeracao > clientes.size()) {
 							ClienteInvalido iv;
 							throw iv;
@@ -1006,10 +1031,8 @@ void Empresa::menu() {
 					pause();
 					clear();
 					break;
-					menu();
 				}
 						
-					cin.ignore(1000, '\n');
 
 					clear();
 					cout << *(clientes[numeracao - 1]) << endl;
@@ -1020,7 +1043,9 @@ void Empresa::menu() {
 					cout << "Nao --------------------------------------------2"
 							<< endl;
 					try {		
-						cin >> conf;
+						getline(cin, confe);
+						conf = atoi(confe.c_str());
+
 						if(conf < 1 || conf > 2) {
 							OFBOpcoes o;
 							throw o;
@@ -1031,10 +1056,8 @@ void Empresa::menu() {
 						pause();
 						clear();
 						break;
-						menu();
 					} 
 						
-					cin.ignore(1000, '\n');
 
 					if (conf == 1) {
 						removeCliente(numeracao - 1);
@@ -1046,7 +1069,9 @@ void Empresa::menu() {
 						cout << "Sim-----------2" << endl;
 						
 						try {		
-							cin >> conf;
+							getline(cin, confe);
+							conf = atoi(confe.c_str());
+
 							if(conf < 1 || conf > 2) {
 							OFBOpcoes o;
 							throw o;
@@ -1057,7 +1082,6 @@ void Empresa::menu() {
 							pause();
 							clear();
 							break;
-							menu();
 						} 
 
 						pause();
@@ -1074,13 +1098,16 @@ void Empresa::menu() {
 			case 4: {
 				clear();
 				int opcao;
+				string opcaoe;
+
 				for (unsigned int i = 0; i < clientes.size(); i++) {
 					cout << i + 1 << "  " << clientes[i]->getNome() << endl;
 				}
 				cout << "Qual o cliente que deseja analisar?" << endl;
 				
 				try {
-					cin >> opcao;
+					getline(cin, opcaoe);
+					opcao = atoi(opcaoe.c_str());
 					
 					if(opcao < 1 || opcao > clientes.size()) {
 						ClienteInvalido inv;
@@ -1092,9 +1119,8 @@ void Empresa::menu() {
 						pause();
 						clear();
 						break;
-						menu();
+
 					}
-				cin.ignore(1000, '\n');
 
 				cout << *(clientes[opcao - 1]) << endl;
 				pause();
@@ -1111,6 +1137,7 @@ void Empresa::menu() {
 		case 4: {		//Menu Servicos
 			clear();
 			int opS;
+			string opSe;
 			string datai, dataf, nome, descricao, precoe, duracaoe;
 			double preco, duracao;
 			cout << "**************Menu Servicos***********************" << endl
@@ -1121,10 +1148,12 @@ void Empresa::menu() {
 			cout << "Listar Servicos Standard------------------4" << endl;
 			cout << "Adicionar Servico a veiculo---------------5" << endl;
 			cout << "Retirar Servico a veiculo-----------------6" << endl;
-			cout << "Sair---------------------------------0" << endl;
+			cout << "Sair--------------------------------------0" << endl;
 			
 			try {
-				cin >> opS;
+				getline(cin, opSe);
+				opS = atoi(opSe.c_str());
+
 				if(opS < 0 || opS > 6) {
 					OFBOpcoes o;
 					throw o;
@@ -1135,56 +1164,56 @@ void Empresa::menu() {
 				pause();
 				clear();
 				break;
-				menu();
 			}
 				
-			cin.ignore(1000, '\n');
 			clear();
 
 			switch (opS) {
 			case 1: {		// Adicionar Servico Standard
 				int conf;
+				string confe;
+
 				do {
 					
 				try {	
 					cout << "Insira data de inicio (XX-XX-XX)" << endl;
-					getline(cin, datai);				
-					if(datai.size() > 5) {
+					getline(cin, datai);
+					if(datai.size() > SIZETEXTO) {
 						DataIniExc di;
 						throw di;
 					}
 					
 					cout << "Insira data de fim (XX-XX-XX)" << endl;
 					getline(cin, dataf);
-					if(dataf.size() > 5) {
+					if(dataf.size() > SIZETEXTO) {
 						DataFimExc df;
 						throw df;
 					}
 					
 					cout << "Insira nome do servico" << endl;
 					getline(cin, nome);
-					if(nome.size() > 5) {
+					if(nome.size() > SIZETEXTO) {
 						NomServExc ns;
 						throw ns;	
 					}
 					
 					cout << "Insira descricao do servico" << endl;
 					getline(cin, descricao);
-					if(descricao.size() > 5) {
+					if(descricao.size() > SIZETEXTO) {
 						DescServExc dc;
 						throw dc;	
 					}
 					
 					cout << "Insira preco por hora do servico" << endl;
 					getline(cin, precoe);
-					if(precoe.size() > 5) {
+					if(precoe.size() > SIZETEXTO) {
 						PrecoServExc ps;
 						throw ps;
 					}
 					
 					cout << "Insira duracao do servico" << endl;
 					getline(cin, duracaoe);
-					if(duracaoe.size() > 5) {
+					if(duracaoe.size() > SIZETEXTO) {
 						DuracaoServExc ds;
 						throw ds;
 					}
@@ -1194,7 +1223,6 @@ void Empresa::menu() {
 						pause();
 						clear();
 						break;
-						menu();
 					}
 				
 				try {
@@ -1209,7 +1237,6 @@ void Empresa::menu() {
 					pause();
 					clear();
 					break;
-					menu();
 				}
 				
 				try {	
@@ -1224,17 +1251,19 @@ void Empresa::menu() {
 					pause();
 					clear();
 					break;
-					menu();
 				}
 				
 					Standard *s = new Standard(nome, descricao, preco, duracao,
 							datai, dataf);
+
 					cout << "Servico bem criado?" << endl;
 					cout << "Sim----------------1" << endl;
 					cout << "Nao----------------2" << endl;
 					
 					try {
-						cin >> conf;
+						getline(cin, confe);
+						conf = atoi(confe.c_str());
+
 						if (conf < 1 || conf > 2) {
 							OFBOpcoes o;
 							throw o;
@@ -1245,7 +1274,6 @@ void Empresa::menu() {
 						pause();
 						clear();
 						break;
-						menu();
 					}
 						
 					if (conf == 1) {
@@ -1256,7 +1284,9 @@ void Empresa::menu() {
 						cout << "Sim----------------2" << endl;
 						
 						try {
-							cin >> conf;
+							getline(cin, confe);
+							conf = atoi(confe.c_str());
+
 							if (conf < 1 || conf > 2) {
 								OFBOpcoes o;
 								throw o;
@@ -1267,18 +1297,17 @@ void Empresa::menu() {
 							pause();
 							clear();
 							break;
-							menu();
 						}
 							
-						cin.ignore(1000, '\n');
 					}
 				} while (conf != 1);
 
 			}
 				break;
 			case 2: { //Remover servicos standard
-				int serv;
-				int conf;
+				int serv, conf;
+				string serve, confe;
+
 				do {
 					for (unsigned int i = 0; i < standards.size(); i++) {
 						cout << i + 1 << "  " << standards[i]->getNome()
@@ -1287,7 +1316,10 @@ void Empresa::menu() {
 
 					cout << "Qual o servico que deseja remover?" << endl;
 					try {
-						cin >> serv;
+
+						getline(cin, serve);
+						serv = atoi(serve.c_str());
+
 						if(serv < 1 || serv > standards.size()) {
 							ServInvalido si;
 							throw si;
@@ -1298,18 +1330,20 @@ void Empresa::menu() {
 						pause();
 						clear();
 						break;
-						menu();
 					}
 					
 					
-					cin.ignore(1000, '\n');
+
 					cout << "Tem a certeza que quer remover o Servico "
 							<< standards[serv - 1]->getNome() << endl;
 					cout << "Sim----------------1" << endl;
 					cout << "Nao----------------2" << endl;
 					
 					try {
-						cin >> conf;
+
+						getline(cin, confe);
+						conf = atoi(confe.c_str());
+
 						if(conf < 1 || conf > 2) {
 							OFBOpcoes o;
 							throw o;
@@ -1320,11 +1354,12 @@ void Empresa::menu() {
 						pause();
 						clear();
 						break;				
-						menu();
+
 					}
 					
 					if (conf == 1) {
 						removeStandard(serv - 1);
+						cout << "Servico removido com sucesso" << endl;
 
 					} else {
 						cout << "Deseja eliminar outro servico?" << endl;
@@ -1332,7 +1367,9 @@ void Empresa::menu() {
 						cout << "Sim----------------2" << endl;
 						
 						try {
-							cin >> conf;
+							getline(cin, confe);
+							conf = atoi(confe.c_str());
+
 							if(conf < 1 || conf > 2) {
 								OFBOpcoes o;
 								throw o;
@@ -1343,7 +1380,6 @@ void Empresa::menu() {
 							pause();
 							clear();
 							break;				
-							menu();
 						}
 					}
 				} while (conf != 1);
@@ -1357,8 +1393,11 @@ void Empresa::menu() {
 				break;
 
 			case 4: { //Lista servicos
+
 				clear();
 				int opcao;
+				string opcaoe;
+
 				for (unsigned int i = 0; i < standards.size(); i++) {
 					cout << i + 1 << "  " << standards[i]->getNome() << endl;
 				}
@@ -1366,7 +1405,10 @@ void Empresa::menu() {
 				cout << "Qual o servico que deseja analisar?" << endl;
 				
 				try{
-					cin >> opcao;
+
+					getline(cin, opcaoe);
+					opcao = atoi(opcaoe.c_str());
+
 					if(opcao < 1 || opcao > standards.size()){
 						ServInvalido si;
 						throw si;
@@ -1377,13 +1419,11 @@ void Empresa::menu() {
 					pause();
 					clear();
 					break;
-					menu();
 				}
 				
 				
-				cin.ignore(1000, '\n');
-
 				cout << *(standards[opcao - 1]) << endl;
+				pause();
 
 			}
 				break;
@@ -1391,13 +1431,17 @@ void Empresa::menu() {
 			case 5: { // adicionar servico ao veiculo
 				clear();
 				int opcao, opcao2, opcao3;
+				string opcaoe, opcao2e, opcao3e;
+
 				cout << "A que veiculo deseja adicionar o servico?" << endl;
 				for (unsigned int i = 0; i < veiculos.size(); i++) {
 					cout << i + 1 << "  " << veiculos[i]->getMarca() << endl;
 				}
 				
 				try {
-					cin >> opcao;
+					getline(cin, opcaoe);
+					opcao = atoi(opcaoe.c_str());
+
 					if(opcao < 1 || opcao > veiculos.size()){
 						VeicInvalido vi;
 						throw vi;
@@ -1408,7 +1452,6 @@ void Empresa::menu() {
 					pause();
 					clear();
 					break;
-					menu();
 				}
 
 				cout << "Deseja acrescentar um servico standart " << endl;
@@ -1416,7 +1459,9 @@ void Empresa::menu() {
 				cout << "Nao----------------2" << endl;
 				
 				try {
-					cin >> opcao2;
+					getline(cin, opcao2e);
+					opcao2 = atoi(opcao2e.c_str());
+
 					if(opcao2 < 1 || opcao2 > 2) {
 						OFBOpcoes o;
 						throw o;
@@ -1427,10 +1472,8 @@ void Empresa::menu() {
 					pause();
 					clear();
 					break;
-					menu();
 				}
 				
-				cin.ignore(1000, '\n');
 
 				if (opcao2 == 1) {
 					cout << "Que servico deseja adicionar?" << endl;
@@ -1440,7 +1483,9 @@ void Empresa::menu() {
 					}
 					
 					try {
-						cin >> opcao3;
+						getline(cin, opcao3e);
+						opcao3 = atoi(opcao3e.c_str());
+
 						if(opcao3 < 1 || opcao3 > standards.size()) {
 							ServInvalido si;
 							throw si;
@@ -1451,53 +1496,54 @@ void Empresa::menu() {
 						pause();
 						clear();
 						break;
-						menu();
 					}
 						
 						
 					veiculos[opcao - 1]->novoStandard(standards[opcao3 - 1]);
+					cout << "Servico Standard adicionado a Veiculo com sucesso" << endl;
+
 				} else if (opcao2 == 2) {
 					int conf;
 					do {
 					  try {
 						cout << "Insira data de inicio (XX-XX-XX)" << endl;
 						getline(cin, datai);
-						if(datai.size() > 5){
+						if(datai.size() > 8){
 							DataIniExc di;
 							throw di;
 						}
 						
 						cout << "Insira data de fim (XX-XX-XX)" << endl;
 						getline(cin, dataf);
-						if(dataf.size() > 5){
+						if(dataf.size() > 8){
 							DataFimExc df;
 							throw df;
 						}
 						
 						cout << "Insira nome do servico" << endl;
 						getline(cin, nome);
-						if(nome.size() > 5){
+						if(nome.size() > SIZETEXTO){
 							NomServExc ns;
 							throw ns;
 						}
 						
 						cout << "Insira descricao do servico" << endl;
 						getline(cin, descricao);
-						if(descricao.size() > 5) {
+						if(descricao.size() > SIZETEXTO) {
 							DescServExc ds;
 							throw ds;
 						}
 						
 						cout << "Insira preco por hora do servico" << endl;
 						getline(cin, precoe);
-						if(precoe.size()) {
+						if(precoe.size()>SIZETEXTO) {
 							PrecoServExc ps;
 							throw ps;
 						}
 						
 						cout << "Insira duracao do servico" << endl;
 						getline(cin, duracaoe);
-						if(duracaoe.size()) {
+						if(duracaoe.size()>SIZETEXTO) {
 							DuracaoServExc ds;
 							throw ds;
 						}
@@ -1507,7 +1553,6 @@ void Empresa::menu() {
 							pause();
 							clear();
 							break;
-							menu();
 						}
 						
 					try {	
@@ -1522,7 +1567,6 @@ void Empresa::menu() {
 						pause();
 						clear();
 						break;
-						menu();
 					}
 					
 					try {
@@ -1537,9 +1581,8 @@ void Empresa::menu() {
 						pause();
 						clear();
 						break;
-						menu();		
 					}
-						
+						string confe;
 						Standard *s = new Standard(nome, descricao, preco,
 								duracao, datai, dataf);
 						cout << "Servico bem criado?" << endl;
@@ -1547,7 +1590,9 @@ void Empresa::menu() {
 						cout << "Nao----------------2" << endl;
 						
 						try{
-							cin >> conf;
+							getline(cin, confe);
+							conf = atoi(confe.c_str());
+
 							if(conf < 1 || conf > 2){
 								OFBOpcoes o;
 								throw o;
@@ -1558,7 +1603,6 @@ void Empresa::menu() {
 							pause();
 							clear();
 							break;
-							menu();
 						}
 						
 						if (conf == 1) {
@@ -1570,7 +1614,9 @@ void Empresa::menu() {
 							cout << "Sim----------------2" << endl;
 							
 							try{
-								cin >> conf;
+								getline(cin, confe);
+								conf = atoi(confe.c_str());
+
 								if(conf < 1 || conf > 2){
 									OFBOpcoes o;
 									throw o;
@@ -1581,20 +1627,25 @@ void Empresa::menu() {
 								pause();
 								clear();
 								break;
-								menu();
 							}
 							
-							cin.ignore(1000, '\n');
 						}
 					} while (conf != 1);
 				}
 			}
 				break;
 
+			case 6: {//remove servico a veiculo
+				clear();
+				removeServicoVeiculo();
+				pause();
+
+			}break;
+
 			}
-			pause();
 		} //fim menu servicos
 			break;
+
 		case 0: {
 			escreveStandards();
 			escreveClientes();
@@ -1612,6 +1663,8 @@ void Empresa::menu() {
 
 void Empresa::modificaFunc() {
 	int numeracao, conf;
+	string numeracaoe, confe;
+
 	for (unsigned int i = 0; i < funcionarios.size(); i++) {
 		cout << i + 1 << "   " << funcionarios[i]->getNome() << endl;
 	}
@@ -1619,7 +1672,9 @@ void Empresa::modificaFunc() {
 	cout << "Qual o funcionario que deseja modificar" << endl;
 	
 	try {
-		cin >> numeracao;
+		getline(cin, numeracaoe);
+		numeracao = atoi(numeracaoe.c_str());
+
 		if(numeracao < 1 || numeracao > funcionarios.size()){
 			FuncionarioInvalido fi;
 			throw fi;
@@ -1629,15 +1684,14 @@ void Empresa::modificaFunc() {
 		cout << "Funcionario não existente" << endl;
 		pause();
 		clear();
-		//break;
-	//	menu();
-	//	exit(-1);
 	}
 		
-	cin.ignore(1000, '\n');
 
 	clear();
-	cout << *(funcionarios[numeracao - 1]) << endl;
+
+	if(numeracao >=1 && numeracao <=funcionarios.size()){
+
+		cout << *(funcionarios[numeracao - 1]) << endl;
 	pause();
 	cout << "o que deseja modificar ?" << endl;
 	cout << "Nome---------------1" << endl;
@@ -1650,7 +1704,9 @@ void Empresa::modificaFunc() {
 	cout << "Sair---------------0" << endl;
 	
 	try {
-		cin >> conf;
+		getline(cin, confe);
+		conf = atoi(confe.c_str());
+
 		if(conf < 0 || conf > 7){
 			OFBOpcoes o;
 			throw o;
@@ -1660,12 +1716,9 @@ void Empresa::modificaFunc() {
 		cout << "Opção Invalida" << endl;
 		pause();
 		clear();
-		//break;
-	   //menu();
-	  //exit(-1);
+
 	}
 	
-	cin.ignore(1000, '\n');
 
 	switch (conf) {
 		
@@ -1675,7 +1728,7 @@ void Empresa::modificaFunc() {
 		string nome;
 		cout << "Qual o novo nome?" << endl;
 		getline(cin, nome);
-			if(nome.size() > 5) {
+			if(nome.size() > SIZETEXTO) {
 				fNomeOFB n;
 				throw n;
 			}
@@ -1689,7 +1742,7 @@ void Empresa::modificaFunc() {
 			pause();
 			clear();
 			break;
-			menu(); 
+
 		}
 			
 		
@@ -1702,7 +1755,7 @@ void Empresa::modificaFunc() {
 		string contacto;
 		cout << "Qual o novo contacto?" << endl;
 		getline(cin, contacto);
-		if(contacto.size() > 5) {
+		if(contacto.size() > SIZETEXTO) {
 			fContactoOFB c;
 			throw c;
 		}
@@ -1715,7 +1768,6 @@ void Empresa::modificaFunc() {
 			pause();
 			menu();
 			break;
-			clear(); 
 		}
 	 	
 		
@@ -1727,7 +1779,7 @@ void Empresa::modificaFunc() {
 		string morada;
 		cout << "Qual a nova morada?" << endl;
 		getline(cin, morada);
-		if(morada.size() > 5) {
+		if(morada.size() > SIZETEXTO) {
 			fMoradaOFB m;
 			throw m;
 		}
@@ -1740,7 +1792,6 @@ void Empresa::modificaFunc() {
 			pause();
 			clear();
 			break;
-			menu(); 
 		}
 		
 	}
@@ -1754,7 +1805,7 @@ void Empresa::modificaFunc() {
 		
 		cout << "Qual o numero das horas extra?" << endl;
 		getline(cin, temp);
-		if(temp.size() > 5) {
+		if(temp.size() > SIZETEXTO) {
 			fHorasExtraSize fhs;
 			throw fhs;
 		}
@@ -1772,7 +1823,6 @@ void Empresa::modificaFunc() {
 			pause();
 			menu();
 			break;
-			clear();
 		}
 		
 		catch (fHorasExtraSize){
@@ -1780,13 +1830,12 @@ void Empresa::modificaFunc() {
 			pause();
 			menu();
 			break;
-			clear();
 		}
 	
 		funcionarios[numeracao - 1]->setHorasExtra(horasEx);
 		cout << "Horas extra alteradas com sucesso" << endl;
 		pause();
-			
+
 	}
 		break;
 	case 5: {
@@ -1797,7 +1846,7 @@ void Empresa::modificaFunc() {
 		cout << "Qual o novo salario?" << endl;
 		getline(cin, temp);
 		
-		if(temp.size() > 5){
+		if(temp.size() > SIZETEXTO){
 			fSalarioSize fss;
 			throw fss;
 		}
@@ -1835,7 +1884,7 @@ void Empresa::modificaFunc() {
 		string especializacao;
 		cout << "Qual a nova especializacao?" << endl;
 		getline(cin, especializacao);
-		if(especializacao.size() > 5){
+		if(especializacao.size() > SIZETEXTO){
 			fEspecOFB esp;
 			throw esp;
 		}
@@ -1856,11 +1905,15 @@ void Empresa::modificaFunc() {
 	case 7: {
 		clear();
 		int opcao, nrvei;
+		string opcaoe, nrveie;
+
 		cout << "Adicionar veiculo--------1" << endl;
 		cout << "Remover veiculo----------2" << endl;
 		
 		try {
-			cin >> opcao;
+			getline(cin, opcaoe);
+			opcao = atoi(opcaoe.c_str());
+
 			if (opcao < 1 || opcao > 2) {
 				OFBOpcoes o;
 				throw o;
@@ -1871,11 +1924,9 @@ void Empresa::modificaFunc() {
 			pause();
 			clear();
 			break;
-			menu();
 		}
 			
 			
-			cin.ignore(1000, '\n');
 
 		if (opcao == 1) {
 			clear();
@@ -1886,7 +1937,9 @@ void Empresa::modificaFunc() {
 			cout << "Selecione veiculo para adicionar" << endl;
 			
 			try {
-				cin >> nrvei;
+				getline(cin, nrveie);
+				nrvei = atoi(nrveie.c_str());
+
 				if(nrvei < 1 || nrvei > veiculos.size()) {
 					VeicInvalido vi;
 					throw vi;
@@ -1897,11 +1950,9 @@ void Empresa::modificaFunc() {
 				pause();
 				clear();
 				break;
-				menu();
 			}
 			
 			
-			cin.ignore(1000, '\n');
 
 			funcionarios[numeracao - 1]->adicionaVeiculo(veiculos[nrvei - 1]);
 			cout << "Veiculo adicionado com sucesso" << endl;
@@ -1921,7 +1972,9 @@ void Empresa::modificaFunc() {
 				cout << "Selecione veiculo para retirar" << endl;
 				
 				try {
-					cin >> nrvei;
+					getline(cin, nrveie);
+					nrvei = atoi(nrveie.c_str());
+
 					if(nrvei < 1 || nrvei > veiculos.size()) {
 					VeicInvalido vi;
 					throw vi;
@@ -1932,10 +1985,8 @@ void Empresa::modificaFunc() {
 				pause();
 				clear();
 				break;
-				menu();
 			}
 						
-				cin.ignore(1000, '\n');
 
 				funcionarios[numeracao - 1]->removeVeiculo(nrvei - 1);
 				cout << "Veiculo removido com sucesso" << endl;
@@ -1953,19 +2004,23 @@ void Empresa::modificaFunc() {
 		break;
 
 	}
-
+	}
 }
 
 void Empresa::modificaCli() {
 
 	clear();
 	int indice, temp;
+	string indicee, tempe;
+
 	for (unsigned int i = 0; i < clientes.size(); i++) {
 		cout << i + 1 << "  " << clientes[i]->getNome() << endl;
 	}
 	cout << "Qual o cliente que deseja modificar?" << endl;
 	try {
-		cin >> indice;
+		getline(cin, indicee);
+		indice = atoi(indicee.c_str());
+
 		if(indice < 1 || indice > clientes.size()){
 			ClienteInvalido ci;
 			throw ci;
@@ -1973,10 +2028,11 @@ void Empresa::modificaCli() {
 	}
 	catch (ClienteOFB){
 			cout << "Cliente Inexistente" << endl;
+			pause();
+			clear();
 	}
 		
-	cin.ignore(1000, '\n');
-
+		if(indice >1 && indice <clientes.size()){
 	clear();
 	cout << *(clientes[indice - 1]) << endl;
 	pause();
@@ -1988,7 +2044,9 @@ void Empresa::modificaCli() {
 	cout << "Sair-----------------0" << endl;
 	
 	try {
-		cin >> temp;
+		getline(cin, tempe);
+		temp = atoi(tempe.c_str());
+
 		if(temp < 0 || temp > 3) {
 			OFBOpcoes o;
 			throw o;
@@ -1998,13 +2056,10 @@ void Empresa::modificaCli() {
 		cout << "Opção invalida" << endl;
 		pause();
 		clear();
-		/*menu();
-		exit(-1);*/
 		
 	}
 		
-		
-	cin.ignore(1000, '\n');
+
 
 	switch (temp) {
 	case 1: {
@@ -2013,7 +2068,7 @@ void Empresa::modificaCli() {
 		cout << "Qual o novo nome?" << endl;
 		getline(cin, nome);
 	try {
-		if(nome.size() > 5){
+		if(nome.size() > SIZETEXTO){
 			cNomeOFB cn;
 			throw cn;
 		}
@@ -2037,7 +2092,7 @@ void Empresa::modificaCli() {
 		cout << "Qual o novo contacto?" << endl;
 		getline(cin, contacto);
 	try {
-		if(contacto.size() > 5){
+		if(contacto.size() > SIZETEXTO){
 			cContactoOFB ct;
 			throw ct;
 		}
@@ -2062,7 +2117,7 @@ void Empresa::modificaCli() {
 		cout << "Qual a nova morada?" << endl;
 		getline(cin, morada);
 	try {
-		if(morada.size() > 5){
+		if(morada.size() > SIZETEXTO){
 			cMoradaOFB md;
 			throw md;
 		}
@@ -2086,12 +2141,13 @@ void Empresa::modificaCli() {
 		break;
 
 	}
-
+		}
 }
 
 void Empresa::menuVeiculos() {
 	clear();
 	int opcao;
+	string opcaoe;
 	cout << "Seleccione uma opcão:" << endl;
 	cout << "Adicionar Veiculo----------1" << endl;
 	cout << "Remover Veiculo------------2" << endl;
@@ -2100,7 +2156,10 @@ void Empresa::menuVeiculos() {
 	cout << "Sair ----------------------0" << endl;
 	
 	try {
-		cin >> opcao;
+		getline(cin, opcaoe);
+		opcao = atoi(opcaoe.c_str());
+
+
 		if(opcao < 0 || opcao > 4){
 			OFBOpcoes o;
 			throw o;
@@ -2109,13 +2168,8 @@ void Empresa::menuVeiculos() {
 	catch (OpcoesExc) {
 		cout << "Opção Invalida" << endl;
 		pause();
-		clear();
-		//break;
-		/*menu();
-		exit(-1);*/
 	}
 		
-	cin.ignore(1000, '\n');
 
 	switch (opcao) {
 
@@ -2123,6 +2177,8 @@ void Empresa::menuVeiculos() {
 		clear();
 
 		int i;
+		string ie;
+
 		string marca, modelo, matricula, tipo;
 		cout << "Tipo de veiculo " << endl;
 		cout << "Carro---------------1" << endl;
@@ -2131,7 +2187,9 @@ void Empresa::menuVeiculos() {
 		cout << "Sair----------------0" << endl;
 		
 	try {
-		cin >> i;
+		getline(cin, ie);
+		i = atoi(ie.c_str());
+
 		if(i < 0 || i > 3){
 			OFBOpcoes o;
 			throw o;
@@ -2142,10 +2200,8 @@ void Empresa::menuVeiculos() {
 		pause();
 		clear();
 		break;
-		menu();
+
 	}
-		
-		cin.ignore(1000, '\n');
 
 		switch (i) {
 		case 1: {  //Carro
@@ -2153,7 +2209,7 @@ void Empresa::menuVeiculos() {
 			cout << "Insira marca" << endl;
 			getline(cin, marca);
 			try {
-				if(marca.size() > 5) {
+				if(marca.size() > SIZETEXTO) {
 					CarMarcaExc cm;
 					throw cm;
 				}
@@ -2169,7 +2225,7 @@ void Empresa::menuVeiculos() {
 			cout << "Insira modelo" << endl;
 			getline(cin, modelo);
 			try {
-				if(modelo.size() > 5) {
+				if(modelo.size() > SIZETEXTO) {
 					CarModeloExc cmd;
 					throw cmd;
 				}
@@ -2185,7 +2241,7 @@ void Empresa::menuVeiculos() {
 			cout << "Insira Matricula (XX-XX-XX)" << endl;
 			getline(cin, matricula);
 			try {
-				if(matricula.size() > 5) {
+				if(matricula.size() > 8) {
 					CarMatrExc cmt;
 					throw cmt;
 				}
@@ -2202,7 +2258,7 @@ void Empresa::menuVeiculos() {
 			cout << "Insira categoria" << endl;
 			getline(cin, tipo);
 			try {
-				if(tipo.size() > 5) {
+				if(tipo.size() > SIZETEXTO) {
 					CarCategoriaExc cg;
 					throw cg;
 				}
@@ -2219,6 +2275,7 @@ void Empresa::menuVeiculos() {
 			Carro *c = new Carro(marca, modelo, matricula, tipo);
 			veiculos.push_back(c);
 			novoCarro(c);
+			cout << "Carro adicionado com sucesso" << endl;
 			pause();
 
 		}
@@ -2228,7 +2285,7 @@ void Empresa::menuVeiculos() {
 			cout << "Insira marca" << endl;
 			getline(cin, marca);
 			try {
-				if(marca.size() > 5){
+				if(marca.size() > SIZETEXTO){
 					CamiaoMarcaExc cm;
 					throw cm;
 				}
@@ -2244,7 +2301,7 @@ void Empresa::menuVeiculos() {
 			cout << "Insira modelo" << endl;
 			getline(cin, modelo);
 			try {
-				if(modelo.size() > 5){
+				if(modelo.size() > SIZETEXTO){
 					CamiaoModeloExc cmd;
 					throw cmd;
 				}
@@ -2260,7 +2317,7 @@ void Empresa::menuVeiculos() {
 			cout << "Insira Matricula (XX-XX-XX)" << endl;
 			getline(cin, matricula);
 			try {
-				if(matricula.size() > 5){
+				if(matricula.size() > 8){
 					CamiaoMatrExc cmt;
 					throw cmt;
 				}
@@ -2276,7 +2333,7 @@ void Empresa::menuVeiculos() {
 			cout << "Insira categoria" << endl;
 			getline(cin, tipo);
 			try {
-				if(tipo.size() > 5){
+				if(tipo.size() > SIZETEXTO){
 					CamiaoCategoriaExc cg;
 					throw cg;
 				}
@@ -2292,6 +2349,7 @@ void Empresa::menuVeiculos() {
 			Camiao *c = new Camiao(marca, modelo, matricula, tipo);
 			veiculos.push_back(c);
 			novoCamiao(c);
+			cout << "Camiao adicionado com sucesso" << endl;
 			pause();
 
 		}
@@ -2303,7 +2361,7 @@ void Empresa::menuVeiculos() {
 			cout << "Insira marca" << endl;
 			getline(cin, marca);
 			try {
-				if(marca.size() > 5) {
+				if(marca.size() > SIZETEXTO) {
 					BusMarcaExc bm;
 					throw bm;
 				}
@@ -2319,7 +2377,7 @@ void Empresa::menuVeiculos() {
 			cout << "Insira modelo" << endl;
 			getline(cin, modelo);
 			try {
-				if(modelo.size() > 5) {
+				if(modelo.size() > SIZETEXTO) {
 					BusModeloExc bmd;
 					throw bmd;
 				}
@@ -2335,7 +2393,7 @@ void Empresa::menuVeiculos() {
 			cout << "Insira Matricula (XX-XX-XX)" << endl;
 			getline(cin, matricula);
 			try {
-				if(matricula.size() > 5) {
+				if(matricula.size() > 8) {
 					BusMatrExc bmt;
 					throw bmt;
 				}
@@ -2351,6 +2409,7 @@ void Empresa::menuVeiculos() {
 			Bus *b = new Bus(marca, modelo, matricula);
 			veiculos.push_back(b);
 			novoBus(b);
+			cout << "Bus adicionado com sucesso" << endl;
 			pause();
 		}
 			break;
@@ -2363,6 +2422,8 @@ void Empresa::menuVeiculos() {
 	case 2: {
 		clear();
 		int opcao, temp;
+		string opcaoe, tempe;
+
 		cout << "Insira tipo que deseja remover" << endl;
 		cout << "Carro-------------------1" << endl;
 		cout << "Camiao------------------2" << endl;
@@ -2370,7 +2431,9 @@ void Empresa::menuVeiculos() {
 		cout << "Sair--------------------0" << endl;
 		
 		try{
-			cin >> opcao;
+			getline(cin, opcaoe);
+			opcao = atoi(opcaoe.c_str());
+
 			if(opcao < 0 || opcao > 3){
 				OFBOpcoes o;
 				throw o;
@@ -2385,7 +2448,6 @@ void Empresa::menuVeiculos() {
 		}
 			
 			
-		cin.ignore(1000, '\n');
 
 		switch (opcao) {
 		case 1: {
@@ -2395,7 +2457,11 @@ void Empresa::menuVeiculos() {
 			}
 			cout << "Selecione o carro que deseja eliminar" << endl;
 			try{
-				cin >> temp;
+
+				getline(cin, tempe);
+				temp = atoi(tempe.c_str());
+
+
 				if(temp < 1 || temp > carros.size()){
 					CarInvalido ci;
 					throw ci;
@@ -2409,9 +2475,8 @@ void Empresa::menuVeiculos() {
 				menu();
 			}
 								
-			cin.ignore(1000, '\n');
-
 			removeCarro(temp - 1);
+			cout << "Carro removido com sucesso" << endl;
 			pause();
 		}
 			break;
@@ -2423,7 +2488,9 @@ void Empresa::menuVeiculos() {
 			cout << "Selecione o camiao que deseja eliminar" << endl;
 					
 			try{
-				cin >> temp;
+				getline(cin, tempe);
+				temp = atoi(tempe.c_str());
+
 				if(temp < 1 || temp > camioes.size()){
 					CamiaoInvalido ti;
 					throw ti;
@@ -2437,9 +2504,9 @@ void Empresa::menuVeiculos() {
 				menu();			
 			}
 				
-			cin.ignore(1000, '\n');
 
 			removeCamiao(temp - 1);
+			cout << "Camiao removido com sucesso" << endl;
 			pause();
 		}
 			break;
@@ -2452,7 +2519,9 @@ void Empresa::menuVeiculos() {
 			cout << "Selecione o bus que deseja eliminar" << endl;
 			
 			try{
-				cin >> temp;
+				getline(cin, tempe);
+				temp = atoi(tempe.c_str());
+
 				if(temp < 1 || temp > buses.size()){
 					BusInvalido bi;
 					throw bi;
@@ -2466,9 +2535,9 @@ void Empresa::menuVeiculos() {
 				menu();			
 			}
 			
-			cin.ignore(1000, '\n');
 
 			removeBus(temp - 1);
+			cout << "Bus removido com sucesso"<< endl;
 			pause();
 		}
 			break;
@@ -2487,6 +2556,8 @@ void Empresa::menuVeiculos() {
 	case 4: { //listagem de veiculos
 		clear();
 		int op, car;
+		string ope, care;
+
 		cout << "O que deseja listar?" << endl;
 		cout << "Carros----------------1" << endl;
 		cout << "Camioes---------------2" << endl;
@@ -2495,7 +2566,9 @@ void Empresa::menuVeiculos() {
 		cout << "Sair------------------0" << endl;
 		
 		try {
-			cin >> op;
+			getline(cin, ope);
+			op = atoi(ope.c_str());
+
 			if(op < 0 || op > 4){
 				OFBOpcoes o;
 				throw o;
@@ -2509,7 +2582,6 @@ void Empresa::menuVeiculos() {
 			menu();
 		}
 			
-		cin.ignore(1000, '\n');
 
 		switch (op) {
 		case 1: { // listar carros
@@ -2519,7 +2591,9 @@ void Empresa::menuVeiculos() {
 			}
 			cout << "Que carro deseja analizar?" << endl;
 			try {
-				cin >> car;
+				getline(cin, care);
+				car = atoi(care.c_str());
+
 				if(car < 1 || car > carros.size()) {
 					CarInvalido ci;
 					throw ci;
@@ -2533,7 +2607,6 @@ void Empresa::menuVeiculos() {
 				menu();
 			}
 				
-			cin.ignore(1000, '\n');
 
 			cout << *(carros[car - 1]) << endl;
 			listaVeiculosServicos(carros[car - 1]);
@@ -2549,7 +2622,9 @@ void Empresa::menuVeiculos() {
 			cout << "Que camiao deseja analizar?" << endl;
 					
 			try {
-				cin >> car;
+				getline(cin, care);
+				car = atoi(care.c_str());
+
 				if(car < 1 || car > camioes.size()) {
 					CamiaoInvalido ti;
 					throw ti;
@@ -2563,7 +2638,6 @@ void Empresa::menuVeiculos() {
 				menu();
 			}
 			
-			cin.ignore(1000, '\n');
 			cout << *(camioes[car - 1]) << endl;
 			listaVeiculosServicos(camioes[car - 1]);
 			pause();
@@ -2571,6 +2645,7 @@ void Empresa::menuVeiculos() {
 		}
 			break;
 		case 3: { // listar buses
+
 			clear();
 			for (unsigned int i = 0; i < buses.size(); i++) {
 				cout << i + 1 << "  " << buses[i]->getMarca() << endl;
@@ -2578,7 +2653,9 @@ void Empresa::menuVeiculos() {
 			cout << "Que bus deseja analizar?" << endl;
 			
 			try {
-				cin >> car;
+				getline(cin, care);
+				car = atoi(care.c_str());
+
 				if(car < 1 || car > buses.size()) {
 					BusInvalido bi;
 					throw bi;
@@ -2592,7 +2669,6 @@ void Empresa::menuVeiculos() {
 				menu();
 			}
 			
-			cin.ignore(1000, '\n');
 			cout << *(buses[car - 1]) << endl;
 			listaVeiculosServicos(buses[car - 1]);
 			pause();
@@ -2608,7 +2684,9 @@ void Empresa::menuVeiculos() {
 			cout << "Que veiculo deseja analizar?" << endl;
 			
 			try {
-				cin >> car;
+				getline(cin, care);
+				car = atoi(care.c_str());
+
 				if(car < 1 || car > veiculos.size()){
 					VeicInvalido vi;
 					throw vi;
@@ -2623,7 +2701,6 @@ void Empresa::menuVeiculos() {
 			}
 			
 			
-			cin.ignore(1000, '\n');
 			cout << *(veiculos[car - 1]) << endl;
 			pause();
 		}
@@ -2647,6 +2724,7 @@ void Empresa::modificaVeic() {
 	clear();
 	string marca, modelo, matricula, categoria;
 	int indice;
+	string indicee;
 	cout << "Que tipo de veiculo deseja alterar?" << endl;
 	cout << "Carro-----------------------------1" << endl;
 	cout << "Camiao----------------------------2" << endl;
@@ -2654,7 +2732,9 @@ void Empresa::modificaVeic() {
 	cout << "Sair------------------------------0" << endl;
 	
 	try {
-		cin >> indice;
+		getline(cin, indicee);
+		indice = atoi(indicee.c_str());
+
 		if(indice < 0 || indice > 3){
 			OFBOpcoes o;
 			throw o;
@@ -2664,22 +2744,25 @@ void Empresa::modificaVeic() {
 		cout << "Opção invalida" << endl;
 		pause();
 		clear();
-	//	break;
 		menu();
 	}
 				
-	cin.ignore(1000, '\n');
+
 
 	switch (indice) {
 	case 1: {
 		clear();
 		int op, nCarro;
+		string ope, nCarroe;
+
 		for (unsigned int i = 0; i < carros.size(); i++) {
 			cout << i + 1 << "   " << carros[i]->getMarca() << endl;
 		}
 		cout << "Insira carro que deseja alterar" << endl;
 		try {
-			cin >> nCarro;
+			getline(cin, nCarroe);
+			nCarro = atoi(nCarroe.c_str());
+
 			if(nCarro < 1 || nCarro > carros.size()) {
 				CarInvalido ci;
 				throw ci;
@@ -2690,10 +2773,8 @@ void Empresa::modificaVeic() {
 			pause();
 			clear();
 			break;
-			menu();		
 		}
 			
-		cin.ignore(1000, '\n');
 
 		cout << "Que atributo deseja alterar?" << endl;
 		cout << "Marca------------------------1" << endl;
@@ -2703,7 +2784,9 @@ void Empresa::modificaVeic() {
 		cout << "Sair-------------------------0" << endl;
 		
 		try {
-			cin >> op;
+			getline(cin, ope);
+			op = atoi(ope.c_str());
+
 			if(op < 0 || op > 4){
 				OFBOpcoes o;
 				throw o;
@@ -2714,11 +2797,8 @@ void Empresa::modificaVeic() {
 			pause();
 			clear();
 			break;
-			menu();
 		}
 		
-		
-		cin.ignore(1000, '\n');
 
 		clear();
 
@@ -2727,7 +2807,7 @@ void Empresa::modificaVeic() {
 			cout << "Insira nova marca" << endl;
 			getline(cin, marca);
 			try{
-				if(marca.size() > 5) {
+				if(marca.size() > SIZETEXTO) {
 					CarMarcaExc cm;
 					throw cm;
 				}
@@ -2737,18 +2817,17 @@ void Empresa::modificaVeic() {
 				pause();
 				clear();
 				break;
-				menu();
 			}
 			
 			carros[nCarro - 1]->setMarca(marca);
-
+			cout << "Marca de Carro alterada com sucesso" << endl;
 		}
 			break;
 		case 2: {
 			cout << "Insira novo modelo" << endl;
 			getline(cin, modelo);
 			try{
-				if(modelo.size() > 5) {
+				if(modelo.size() > SIZETEXTO) {
 					CarMarcaExc cmd;
 					throw cmd;
 				}
@@ -2762,13 +2841,14 @@ void Empresa::modificaVeic() {
 			}
 			
 			carros[nCarro - 1]->setMarca(modelo);
+			cout << "Modelo de Carro alterado com sucesso" << endl;
 		}
 			break;
 		case 3: {
-			cout << "Insira nova matricula" << endl;
+			cout << "Insira nova matricula (XX-XX-XX)" << endl;
 			getline(cin, matricula);
 			try{
-				if(matricula.size() > 5) {
+				if(matricula.size() > 8) {
 					CarMatrExc cmt;
 					throw cmt;
 				}
@@ -2782,13 +2862,15 @@ void Empresa::modificaVeic() {
 			}
 			
 			carros[nCarro - 1]->setMatricula(matricula);
+			cout << "Matricula de Carro alterada com sucesso" << endl;
 		}
 			break;
 		case 4: {
-			cout << "Insira nova categoria" << endl;
-			getline(cin, categoria);
+			cout << "Insira novo tipo" << endl;
+			string tipo;
+			getline(cin, tipo);
 			try{
-				if(categoria.size() > 5) {
+				if(tipo.size() > SIZETEXTO) {
 					CarCategoriaExc cg;
 					throw cg;
 				}
@@ -2801,7 +2883,8 @@ void Empresa::modificaVeic() {
 				menu();
 			}
 			
-			camioes[nCarro - 1]->setCategoria(categoria);
+			carros[nCarro - 1]->setTipo(tipo);
+			cout << "Tipo de Carro alterado com sucesso" << endl;
 		}
 			break;
 		case 0: {
@@ -2815,13 +2898,17 @@ void Empresa::modificaVeic() {
 	case 2: { /*modificar camioes*/
 
 		int op, nCarro;
+		string ope, nCarroe;
+
 		for (unsigned int i = 0; i < camioes.size(); i++) {
 			cout << i + 1 << "   " << camioes[i]->getMarca() << endl;
 		}
 		cout << "Insira camiao que deseja alterar" << endl;
 		
 		try {
-			cin >> nCarro;
+			getline(cin, nCarroe);
+			nCarro = atoi(nCarroe.c_str());
+
 			if(nCarro < 1 || nCarro > camioes.size()) {
 				CamiaoInvalido ti;
 				throw ti;
@@ -2835,7 +2922,6 @@ void Empresa::modificaVeic() {
 			menu();
 		}
 		
-		cin.ignore(1000, '\n');
 
 		cout << "Que atributo deseja alterar?" << endl;
 		cout << "Marca------------------------1" << endl;
@@ -2845,7 +2931,9 @@ void Empresa::modificaVeic() {
 		cout << "Sair-------------------------0" << endl;
 		
 		try {
-			cin >> op;
+			getline(cin, ope);
+			op = atoi(ope.c_str());
+
 			if(op < 0 || op > 4) {
 				OFBOpcoes o;
 				throw o;
@@ -2859,7 +2947,6 @@ void Empresa::modificaVeic() {
 			menu();
 		}
 		
-		cin.ignore(1000, '\n');
 
 		clear();
 		switch (op) {
@@ -2867,7 +2954,7 @@ void Empresa::modificaVeic() {
 			cout << "Insira nova marca" << endl;
 			getline(cin, marca);
 			try{
-				if(marca.size() > 5){
+				if(marca.size() > SIZETEXTO){
 					CamiaoMarcaExc cm;
 					throw cm;
 				}
@@ -2881,6 +2968,7 @@ void Empresa::modificaVeic() {
 			}
 			
 			camioes[nCarro - 1]->setMarca(marca);
+			cout << "Marca de Camiao alterada com sucesso" << endl;
 
 		}
 			break;
@@ -2888,7 +2976,7 @@ void Empresa::modificaVeic() {
 			cout << "Insira novo modelo" << endl;
 			getline(cin, modelo);
 			try{
-				if(modelo.size() > 5){
+				if(modelo.size() > SIZETEXTO){
 					CamiaoModeloExc cmd;
 					throw cmd;
 				}
@@ -2902,13 +2990,14 @@ void Empresa::modificaVeic() {
 			}
 			
 			camioes[nCarro - 1]->setMarca(modelo);
+			cout << "Modelo de Camiao alterado com sucesso" << endl;
 		}
 			break;
 		case 3: {
-			cout << "Insira nova matricula" << endl;
+			cout << "Insira nova matricula(XX-XX-XX)" << endl;
 			getline(cin, matricula);
 			try{
-				if(matricula.size() > 5){
+				if(matricula.size() > 8){
 					CamiaoMatrExc cmt;
 					throw cmt;
 				}
@@ -2922,13 +3011,14 @@ void Empresa::modificaVeic() {
 			}
 			
 			camioes[nCarro - 1]->setMatricula(matricula);
+			cout << "Matricula de Camiao alterada com sucesso" << endl;
 		}
 			break;
 		case 4: {
 			cout << "Insira nova categoria" << endl;
 			getline(cin, categoria);
 			try{
-				if(categoria.size() > 5){
+				if(categoria.size() > SIZETEXTO){
 					CamiaoCategoriaExc cg;
 					throw cg;
 				}
@@ -2942,6 +3032,7 @@ void Empresa::modificaVeic() {
 			}
 			
 			camioes[nCarro - 1]->setCategoria(categoria);
+			cout << "Categoria de Camiao alterada com sucesso" << endl;
 		}
 			break;
 		case 0: {
@@ -2955,14 +3046,17 @@ void Empresa::modificaVeic() {
 
 	case 3: { /*Modifica bus  */
 		clear();
-
 		int opcao, nBus;
+		string opcaoe, nBuse;
+
 		for (unsigned int i = 0; i < buses.size(); i++) {
 			cout << i + 1 << "   " << buses[i]->getMarca() << endl;
 		}
 		cout << "Selecione qual o bus que deseja modificar" << endl;
 		try {
-			cin >> nBus;
+			getline(cin, nBuse);
+			nBus = atoi(nBuse.c_str());
+
 			if(nBus < 1 || nBus > buses.size()) {
 				BusInvalido bi;
 				throw bi;
@@ -2977,8 +3071,6 @@ void Empresa::modificaVeic() {
 		}
 			
 			
-		cin.ignore(1000, '\n');
-
 		clear();
 		cout << "Que atributo deseja alterar?" << endl;
 		cout << "Marca------------------------1" << endl;
@@ -2987,7 +3079,9 @@ void Empresa::modificaVeic() {
 		cout << "Sair-------------------------0" << endl;
 		
 		try {
-			cin >> opcao;
+			getline(cin, opcaoe);
+			opcao = atoi(opcaoe.c_str());
+
 			if(opcao < 0 || opcao > 3){
 				OFBOpcoes o;
 				throw o;
@@ -3001,7 +3095,6 @@ void Empresa::modificaVeic() {
 			menu();
 		}
 		
-		cin.ignore(1000, '\n');
 
 		clear();
 
@@ -3010,7 +3103,7 @@ void Empresa::modificaVeic() {
 			cout << "Insira nova marca" << endl;
 			getline(cin, marca);
 			try {
-				if(marca.size() > 5) {
+				if(marca.size() > SIZETEXTO) {
 					BusMarcaExc bm;
 					throw bm;
 				}
@@ -3024,14 +3117,14 @@ void Empresa::modificaVeic() {
 			}
 			
 			buses[nBus - 1]->setMarca(marca);
-
+			cout << "Marca de Bus alterada com sucesso" << endl;
 		}
 			break;
 		case 2: {
 			cout << "Insira novo modelo" << endl;
 			getline(cin, modelo);
 				try {
-				if(modelo.size() > 5) {
+				if(modelo.size() > SIZETEXTO) {
 					BusModeloExc bmt;
 					throw bmt;
 				}
@@ -3045,13 +3138,14 @@ void Empresa::modificaVeic() {
 			}
 			
 			buses[nBus - 1]->setMarca(modelo);
+			cout << "Modelo de Bus alterado com sucesso" << endl;
 		}
 			break;
 		case 3: {
-			cout << "Insira nova matricula" << endl;
+			cout << "Insira nova matricula (XX-XX-XX)" << endl;
 			getline(cin, matricula);
 				try {
-				if(matricula.size() > 5) {
+				if(matricula.size() > 8) {
 					BusMatrExc bmp;
 					throw bmp;
 				}
@@ -3065,6 +3159,7 @@ void Empresa::modificaVeic() {
 			}
 			
 			buses[nBus - 1]->setMatricula(matricula);
+			cout << "Matricula de Bus alterada com sucesso" << endl;
 			pause();
 		}
 			break;
@@ -3085,6 +3180,8 @@ void Empresa::modificaVeic() {
 void Empresa::modificaServ() {
 	clear();
 	int escolha, opS;
+	string escolhae, opSe;
+
 	for (unsigned int i = 0; i < standards.size(); i++) {
 		cout << i + 1 << "  " << standards[i]->getNome() << endl;
 	}
@@ -3093,7 +3190,9 @@ void Empresa::modificaServ() {
 
 	cout << "Qual dos servicos deseja alterar?" << endl;
 	try {
-		cin >> escolha;
+		getline(cin, escolhae);
+		escolha = atoi(escolhae.c_str());
+
 		if(escolha < 1 || escolha > standards.size()) {
 			ServInvalido si;
 			throw si;
@@ -3103,11 +3202,10 @@ void Empresa::modificaServ() {
 		cout << "Servico Inixestente" << endl;
 		pause();
 		clear();
-	//	break;
+		//break;
 		menu();
 	}
 		
-	cin.ignore(1000, '\n');
 
 	cout << "Que atributo deseja alterar?" << endl;
 	cout << "Data de inicio---------------------1" << endl;
@@ -3119,7 +3217,9 @@ void Empresa::modificaServ() {
 	cout << "Sair-------------------------------0" << endl;
 	
 	try {
-		cin >> opS;
+		getline(cin, opSe);
+		opS = atoi(opSe.c_str());
+
 		if(opS < 0 || opS > 6) {
 			OFBOpcoes o;
 			throw o;
@@ -3129,11 +3229,10 @@ void Empresa::modificaServ() {
 		cout << "Opção invalida" << endl;
 		pause();
 		clear();
-	//	break;
+		//break;
 		menu();
 	}
 		
-	cin.ignore(1000, '\n');
 
 	clear();
 	switch (opS) {
@@ -3142,7 +3241,7 @@ void Empresa::modificaServ() {
 		cout << "Insira nova Data de inicio " << endl;
 		getline(cin, dataI);
 		try {
-			if(dataI.size() > 5) {
+			if(dataI.size() > SIZETEXTO) {
 				DataIniExc di;
 				throw di;
 			}
@@ -3151,12 +3250,11 @@ void Empresa::modificaServ() {
 			cout << "String overflow" << endl;
 			pause();
 			clear();
-			break;
-			menu();
+		break;
 		}
 		
 		standards[escolha - 1]->setDataInicio(dataI);
-
+		cout << "Servico alterado com sucesso " << endl;
 	}
 		break;
 
@@ -3164,7 +3262,7 @@ void Empresa::modificaServ() {
 		cout << "Insira nova Data de fim " << endl;
 		getline(cin, dataF);
 		try {
-			if(dataF.size() > 5) {
+			if(dataF.size() > SIZETEXTO) {
 				DataFimExc df;
 				throw df;
 			}
@@ -3177,8 +3275,9 @@ void Empresa::modificaServ() {
 			menu();
 		}
 		
-		cin.ignore(1000, '\n');
 		standards[escolha - 1]->setDataFim(dataF);
+		cout << "Servico alterado com sucesso " << endl;
+
 	}
 		break;
 
@@ -3186,7 +3285,7 @@ void Empresa::modificaServ() {
 		cout << "Insira novo Nome " << endl;
 		getline(cin, nome);
 		try {
-			if(nome.size() > 5) {
+			if(nome.size() > SIZETEXTO) {
 				NomServExc ns;
 				throw ns;
 			}
@@ -3199,8 +3298,9 @@ void Empresa::modificaServ() {
 			menu();
 		}
 		
-		cin.ignore(1000, '\n');
 		standards[escolha - 1]->setNome(nome);
+		cout << "Servico alterado com sucesso " << endl;
+
 	}
 		break;
 
@@ -3208,7 +3308,7 @@ void Empresa::modificaServ() {
 		cout << "Insira nova Descricao " << endl;
 		getline(cin, descricao);
 		try {
-			if(descricao.size() > 5) {
+			if(descricao.size() > SIZETEXTO) {
 				DescServExc ds;
 				throw ds;
 			}
@@ -3221,16 +3321,17 @@ void Empresa::modificaServ() {
 			menu();
 		}
 		
-		cin.ignore(1000, '\n');
 		standards[escolha - 1]->setDescricao(descricao);
+		cout << "Servico alterado com sucesso " << endl;
+
 	}
 		break;
 
-	case 5: {
+	case SIZETEXTO: {
 		cout << "Insira novo Preco " << endl;
 		getline(cin, precoe);
 		try {
-			if(dataI.size() > 5) {
+			if(dataI.size() > SIZETEXTO) {
 				PrecoServExc ps;
 				throw ps;
 			}
@@ -3240,10 +3341,9 @@ void Empresa::modificaServ() {
 			pause();
 			clear();
 			break;
-			menu();
+
 		}
 		
-		cin.ignore(1000, '\n');
 		
 		try {
 			preco = atof(precoe.c_str());
@@ -3257,10 +3357,12 @@ void Empresa::modificaServ() {
 			pause();
 			clear();
 			break;
-			menu();
+
 		}
 			
 		standards[escolha - 1]->setPreco(preco);
+		cout << "Servico alterado com sucesso " << endl;
+
 	}
 		break;
 
@@ -3268,7 +3370,7 @@ void Empresa::modificaServ() {
 		cout << "Insira nova Duracao (Em horas) " << endl;
 		getline(cin, duracaoe);
 		try {
-			if(duracaoe.size() > 5) {
+			if(duracaoe.size() > SIZETEXTO) {
 				DuracaoServExc dse;
 				throw dse;
 			}
@@ -3278,10 +3380,9 @@ void Empresa::modificaServ() {
 			pause();
 			clear();
 			break;
-			menu();
+
 		}
 		
-		cin.ignore(1000, '\n');
 		
 		try {
 			duracao = atof(duracaoe.c_str());
@@ -3293,7 +3394,8 @@ void Empresa::modificaServ() {
 		catch (ServicosExc) {
 			cout << "Duração Invalida" << endl;
 		}
-					
+		cout << "Servico alterado com sucesso " << endl;
+
 			standards[escolha - 1]->setDuracao(duracao);
 	}
 		break;
@@ -3308,12 +3410,16 @@ void Empresa::modificaServ() {
 
 void Empresa::listaVeiculosServicos(Veiculo *v) {
 	int opcao;
+	string opcaoe;
+
 	cout << "Deseja listar os servicos associados a este veiculo?" << endl;
 	cout << "Sim-------------------1" << endl;
 	cout << "Nao-------------------2" << endl;
 	
 	try {
-		cin >> opcao;
+		getline(cin, opcaoe);
+		opcao = atoi(opcaoe.c_str());
+
 		if(opcao < 1 || opcao > 2) {
 			OFBOpcoes o;
 			throw o;
@@ -3335,14 +3441,81 @@ void Empresa::listaVeiculosServicos(Veiculo *v) {
 	}
 }
 
+
+
+void Empresa :: removeVeiculoFuncionario(){
+	int opcao, opcao2;
+	string opcaoe, opcao2e;
+
+	cout << "Qual o Funcionario? " << endl;
+	for(unsigned int i=0; i<funcionarios.size(); i++){
+		cout << i+1 << "  " << funcionarios[i]->getNome() << endl;
+	}
+
+	try {
+			getline(cin, opcaoe);
+			opcao = atoi(opcaoe.c_str());
+
+			if(opcao < 1 || opcao > funcionarios.size()){
+				FuncionarioInvalido fi;
+				throw fi;
+			}
+		}
+		catch (FuncionarioOFB){
+			cout << "Funcionario inexistente" << endl;
+			pause();
+			clear();
+			menu();
+		}
+
+
+		cout << "Qual o veiculo que quer remover? " << endl;
+
+		for (unsigned int i = 0; i < veiculos.size(); i++) {
+				cout << i + 1 << "   " << veiculos[i]->getMarca() << endl;
+			}
+
+			try {
+				getline(cin, opcao2e);
+				opcao2 = atoi(opcao2e.c_str());
+
+				if(opcao2 < 1 || opcao2 > veiculos.size()) {
+					VeicInvalido vi;
+					throw vi;
+				}
+			}
+			catch (VeicExc) {
+				cout << "Veiculo inexistente" << endl;
+				pause();
+				clear();
+				menu();
+			}
+
+			if(opcao >=1 && opcao <=funcionarios.size()){
+				if(opcao2>=1 && opcao2<=veiculos.size()){
+
+			funcionarios[opcao-1]->removeVeiculo(opcao2-1);
+			cout << "Veiculo removido com sucesso" << endl;
+			}}
+
+}
+
+
+
+
+
 void Empresa::adicionaVeiculoFuncionario() {
 	int opcao, opcao2;
+	string opcaoe, opcao2e;
+
 	cout << "Qual o Funcionario?" << endl;
 	for (unsigned int i = 0; i < funcionarios.size(); i++) {
 		cout << i + 1 << "   " << funcionarios[i]->getNome() << endl;
 	}
 	try {
-		cin >> opcao;
+		getline(cin, opcaoe);
+		opcao = atoi(opcaoe.c_str());
+
 		if(opcao < 1 || opcao > funcionarios.size()){
 			FuncionarioInvalido fi;
 			throw fi;
@@ -3352,7 +3525,6 @@ void Empresa::adicionaVeiculoFuncionario() {
 		cout << "Funcionario inexistente" << endl;
 		pause();
 		clear();
-	//	break;
 		menu();
 	}
 
@@ -3361,7 +3533,9 @@ void Empresa::adicionaVeiculoFuncionario() {
 		cout << i + 1 << "   " << veiculos[i]->getMarca() << endl;
 	}
 	try {
-		cin >> opcao2;
+		getline(cin, opcao2e);
+		opcao2 = atoi(opcao2e.c_str());
+
 		if(opcao2 < 1 || opcao2 > veiculos.size()) {
 			VeicInvalido vi;
 			throw vi;
@@ -3376,6 +3550,64 @@ void Empresa::adicionaVeiculoFuncionario() {
 	}
 
 	funcionarios[opcao - 1]->adicionaVeiculo(veiculos[opcao2 - 1]);
+	cout << "Veiculo adicionado com sucesso" << endl;
+	pause();
+}
+
+
+void Empresa::removeServicoVeiculo(){
+	int opcao, opcao2;
+	string opcaoe, opcao2e;
+
+		cout << "Qual o Veiculo? " << endl;
+		for(unsigned int i=0; i<veiculos.size(); i++){
+			cout << i+1 << "  " << veiculos[i]->getMarca() << endl;
+		}
+
+		try {
+				getline(cin, opcaoe);
+				opcao = atoi(opcaoe.c_str());
+
+				if(opcao < 1 || opcao > veiculos.size()){
+					VeicInvalido fi;
+					throw fi;
+				}
+			}
+			catch (VeicExc){
+				cout << "Veiculo inexistente" << endl;
+				pause();
+				clear();
+				menu();
+			}
+
+
+			cout << "Qual o Servico que quer remover? " << endl;
+
+			for (unsigned int i = 0; i < veiculos[opcao-1]->getStandards().size(); i++) {
+					cout << i + 1 << "   " << veiculos[opcao-1]->getStandards()[i]->getNome()<< endl;
+				}
+ 				try {
+					getline(cin, opcao2e);
+					opcao2 = atoi(opcao2e.c_str());
+
+					if(opcao2 < 1 || opcao2 > veiculos[opcao-1]->getStandards().size()) {
+						ServInvalido vi;
+						throw vi;
+					}
+				}
+				catch (ServicosExc) {
+					cout << "Servico inexistente" << endl;
+					pause();
+					clear();
+					menu();
+				}
+
+
+				veiculos[opcao-1]->removeStandard(opcao2-1);
+				cout << "Servico removido com sucesso" << endl;
 
 }
+
+
+
 

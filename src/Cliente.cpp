@@ -11,6 +11,15 @@ Cliente::Cliente(string nome, string contacto, string morada):Pessoa(nome, conta
 
 }
 
+Cliente::Cliente(string nome, string contacto, string morada, int id):Pessoa(nome, contacto, morada, id){
+
+
+}
+
+int Cliente::getId(){
+	return id;
+}
+
 
 
 Cliente::~Cliente(){
@@ -30,9 +39,11 @@ void Cliente::setVeiculos(vector <Veiculo*> veiculos){
 
 
 ostream& operator<< (ostream &out,const Cliente &clie){
+	out << "Id: " << clie.id << endl;
 	out << "Nome: " << clie.nome << endl;
 	out << "Contacto: " << clie.contacto << endl;
 	out << "Morada: " << clie.morada << endl;
 
 
-return out;}
+return out;
+}

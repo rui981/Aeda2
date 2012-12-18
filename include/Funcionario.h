@@ -25,6 +25,15 @@ private:
 	vector<Veiculo*> veiculos;
 
 public:
+
+	Funcionario(string nome, string contacto, string morada, string tipo, double salario, int horasExtra, int id);
+
+	int getId();
+
+
+
+
+
 	/**
 	 * @brief Construtor de Funcionario
 	 *
