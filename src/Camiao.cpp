@@ -12,7 +12,7 @@ Camiao::Camiao()
 
 Camiao::Camiao(string mc, string mdl, string mt, string cat):Veiculo(mc,mdl,mt)
 {
-  categoria = cat;
+	categoria = cat;
 }
 
 Camiao::~Camiao()
@@ -20,19 +20,20 @@ Camiao::~Camiao()
 
 string Camiao::getCategoria() const
 {
-  return categoria;
+	return categoria;
 }
 
 void Camiao::setCategoria(string cat)
 {
-  categoria = cat;
+	categoria = cat;
 }
 
 ostream & operator<<(ostream & o, const Camiao & cm){
-      o << "Marca: " << cm.getMarca() << endl;
-      o << "Modelo: " << cm.getModelo() << endl;
-      o << "Matricula: " << cm.getMatricula() << endl;
-      o << "Categoria: " << cm.getCategoria() << endl;
+	o << "ID: " << cm.getID() << endl;
+	o << "Marca: " << cm.getMarca() << endl;
+	o << "Modelo: " << cm.getModelo() << endl;
+	o << "Matricula: " << cm.getMatricula() << endl;
+	o << "Categoria: " << cm.getCategoria() << endl;
 
-      return o;
+	return o;
 }

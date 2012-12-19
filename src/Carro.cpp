@@ -12,7 +12,7 @@ Carro::Carro()
 
 Carro::Carro(string mc, string mdl, string mt, string tp):Veiculo(mc,mdl,mt)
 {
-  tipo = tp;
+	tipo = tp;
 }
 
 Carro::~Carro()
@@ -20,20 +20,21 @@ Carro::~Carro()
 
 string Carro::getTipo() const
 {
-  return tipo;
+	return tipo;
 }
 
 void Carro::setTipo(string tp)
 {
-  tipo = tp;
+	tipo = tp;
 }
 
 ostream & operator<<(ostream & o, const Carro & c){
-      o << "Marca: " << c.getMarca() << endl;
-      o << "Modelo: " << c.getModelo() << endl;
-      o << "Matricula: " << c.getMatricula() << endl;
-      o << "Tipo: " << c.getTipo() << endl;
+	o << "ID: " << c.getID() << endl;
+	o << "Marca: " << c.getMarca() << endl;
+	o << "Modelo: " << c.getModelo() << endl;
+	o << "Matricula: " << c.getMatricula() << endl;
+	o << "Tipo: " << c.getTipo() << endl;
 
-      return o;
+	return o;
 }
 

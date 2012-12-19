@@ -187,6 +187,7 @@ void Empresa::escreveCarros() {
 
 	if (filestr.is_open()) {
 		for (unsigned int i = 0; i < carros.size(); i++) {
+			filestr << carros[i]->getID() << endl;
 			filestr << carros[i]->getMarca() << endl;
 			filestr << carros[i]->getModelo() << endl;
 			filestr << carros[i]->getMatricula() << endl;
@@ -201,7 +202,7 @@ void Empresa::escreveCarros() {
 				filestr << carros[i]->getStandards()[j]->getPreco() << endl;
 				filestr << carros[i]->getStandards()[j]->getDuracao() << endl;
 				filestr << carros[i]->getStandards()[j]->getDataInicio()
-						<< endl;
+								<< endl;
 				filestr << carros[i]->getStandards()[j]->getDataFim();
 				if (j != carros[i]->getStandards().size() - 1) {
 					filestr << endl;
@@ -224,32 +225,32 @@ void Empresa::escreveBuses() {
 
 	if (filestr.is_open()) {
 		for (unsigned int i = 0; i < buses.size(); i++) {
+			filestr << buses[i]->getID() << endl;
+			filestr << buses[i]->getMarca() << endl;
+			filestr << buses[i]->getModelo() << endl;
+			filestr << buses[i]->getMatricula()<< endl;
+			filestr << buses[i]->getStandards().size();
+			for (unsigned int j = 0; j < buses[i]->getStandards().size();
+					j++) {
+				if(j==0) filestr << endl;
+				filestr << buses[i]->getStandards()[j]->getNome() << endl;
+				filestr << buses[i]->getStandards()[j]->getDescricao()
+									<< endl;
+				filestr << buses[i]->getStandards()[j]->getPreco() << endl;
+				filestr << buses[i]->getStandards()[j]->getDuracao()
+									<< endl;
+				filestr << buses[i]->getStandards()[j]->getDataInicio()
+									<< endl;
+				filestr << buses[i]->getStandards()[j]->getDataFim();
 
-				filestr << buses[i]->getMarca() << endl;
-				filestr << buses[i]->getModelo() << endl;
-				filestr << buses[i]->getMatricula()<< endl;
-				filestr << buses[i]->getStandards().size();
-				for (unsigned int j = 0; j < buses[i]->getStandards().size();
-						j++) {
-					if(j==0) filestr << endl;
-					filestr << buses[i]->getStandards()[j]->getNome() << endl;
-					filestr << buses[i]->getStandards()[j]->getDescricao()
-							<< endl;
-					filestr << buses[i]->getStandards()[j]->getPreco() << endl;
-					filestr << buses[i]->getStandards()[j]->getDuracao()
-							<< endl;
-					filestr << buses[i]->getStandards()[j]->getDataInicio()
-							<< endl;
-					filestr << buses[i]->getStandards()[j]->getDataFim();
-
-					if (j != buses[i]->getStandards().size() - 1) {
-						filestr << endl;
-					}
-
-				}
-				if (i != buses.size() - 1) {
+				if (j != buses[i]->getStandards().size() - 1) {
 					filestr << endl;
 				}
+
+			}
+			if (i != buses.size() - 1) {
+				filestr << endl;
+			}
 
 		}
 
@@ -262,33 +263,34 @@ void Empresa::escreveCamioes() {
 
 	if (filestr.is_open()) {
 		for (unsigned int i = 0; i < camioes.size(); i++) {
-				filestr << camioes[i]->getMarca() << endl;
-				filestr << camioes[i]->getModelo() << endl;
-				filestr << camioes[i]->getMatricula() << endl;
-				filestr << camioes[i]->getCategoria() << endl;
-				filestr << camioes[i]->getStandards().size();
-				for (unsigned int j = 0; j < camioes[i]->getStandards().size();
-						j++) {
-					if(j==0) filestr << endl;
-					filestr << camioes[i]->getStandards()[j]->getNome() << endl;
-					filestr << camioes[i]->getStandards()[j]->getDescricao()
-							<< endl;
-					filestr << camioes[i]->getStandards()[j]->getPreco()
-							<< endl;
-					filestr << camioes[i]->getStandards()[j]->getDuracao()
-							<< endl;
-					filestr << camioes[i]->getStandards()[j]->getDataInicio()
-							<< endl;
-					filestr << camioes[i]->getStandards()[j]->getDataFim();
-					if (j != camioes[i]->getStandards().size() - 1) {
-						filestr << endl;
-					}
-
-				}
-
-				if (i != camioes.size() - 1) {
+			filestr << camioes[i]->getID() << endl;
+			filestr << camioes[i]->getMarca() << endl;
+			filestr << camioes[i]->getModelo() << endl;
+			filestr << camioes[i]->getMatricula() << endl;
+			filestr << camioes[i]->getCategoria() << endl;
+			filestr << camioes[i]->getStandards().size();
+			for (unsigned int j = 0; j < camioes[i]->getStandards().size();
+					j++) {
+				if(j==0) filestr << endl;
+				filestr << camioes[i]->getStandards()[j]->getNome() << endl;
+				filestr << camioes[i]->getStandards()[j]->getDescricao()
+									<< endl;
+				filestr << camioes[i]->getStandards()[j]->getPreco()
+									<< endl;
+				filestr << camioes[i]->getStandards()[j]->getDuracao()
+									<< endl;
+				filestr << camioes[i]->getStandards()[j]->getDataInicio()
+									<< endl;
+				filestr << camioes[i]->getStandards()[j]->getDataFim();
+				if (j != camioes[i]->getStandards().size() - 1) {
 					filestr << endl;
 				}
+
+			}
+
+			if (i != camioes.size() - 1) {
+				filestr << endl;
+			}
 
 		}
 
@@ -399,8 +401,8 @@ void Empresa::leFuncionarios() {
 
 void Empresa::leCarros() {
 	fstream file;
-	string brand, model, lp, tip, nre, nome, descricao, precoe, duracaoe, datai,
-			dataf;
+	string id, brand, model, lp, tip, nre, nome, descricao, precoe, duracaoe, datai,
+	dataf;
 	int nr;
 	vector<Standard*> stand;
 
@@ -409,6 +411,7 @@ void Empresa::leCarros() {
 
 	if (file.is_open()) {
 		while (!file.eof()) {
+			getline(file, id);
 			getline(file, brand);
 			getline(file, model);
 			getline(file, lp);
@@ -430,9 +433,12 @@ void Empresa::leCarros() {
 
 			}
 
-			Carro * v = new Carro(brand, model, lp, tip);
-			v->setStandards(stand);
-			novoCarro(v);
+			if(brand.size() > 0) {
+				Carro * v = new Carro(brand, model, lp, tip);
+				v->setStandards(stand);
+				novoCarro(v);
+			}
+
 		}
 	}
 
@@ -440,8 +446,8 @@ void Empresa::leCarros() {
 
 void Empresa::leBuses() {
 	fstream file;
-	string brand, model, lp, nre, nome, descricao, precoe, duracaoe, datai,
-			dataf;
+	string id, brand, model, lp, nre, nome, descricao, precoe, duracaoe, datai,
+	dataf;
 	double preco, duracao;
 	int nr;
 	vector<Standard*> stand;
@@ -450,6 +456,7 @@ void Empresa::leBuses() {
 
 	if (file.is_open()) {
 		while (!file.eof()) {
+			getline(file, id);
 			getline(file, brand);
 			getline(file, model);
 			getline(file, lp);
@@ -471,9 +478,12 @@ void Empresa::leBuses() {
 
 			}
 
-			Bus * v = new Bus(brand, model, lp);
-			v->setStandards(stand);
-			novoBus(v);
+			if(brand.size() > 0) {
+				Bus * v = new Bus(brand, model, lp);
+				v->setStandards(stand);
+				novoBus(v);
+			}
+
 		}
 	}
 
@@ -481,15 +491,18 @@ void Empresa::leBuses() {
 
 void Empresa::leCamioes() {
 	fstream file;
-	string brand, model, lp, cat, nre, nome, descricao, precoe, duracaoe, datai,
-			dataf;
+	string id, brand, model, lp, cat, nre, nome, descricao, precoe, duracaoe, datai,
+	dataf;
 	int nr;
 	double preco, duracao;
 	vector<Standard *> stand;
+	int control = 0;
+
 	file.open("Camioes.txt");
 
 	if (file.is_open()) {
 		while (!file.eof()) {
+			getline(file, id);
 			getline(file, brand);
 			getline(file, model);
 			getline(file, lp);
@@ -512,10 +525,11 @@ void Empresa::leCamioes() {
 
 			}
 
-			Camiao * v = new Camiao(brand, model, lp, cat);
-			v->setStandards(stand);
-			novoCamiao(v);
-
+			if(brand.size() > 0) {
+				Camiao * v = new Camiao(brand, model, lp, cat);
+				v->setStandards(stand);
+				novoCamiao(v);
+			}
 		}
 	}
 }
