@@ -21,20 +21,13 @@ using namespace std;
 class Veiculo
 {
 private:
-	static int ID;
+	static int ultimoID;
 	int id;
 	string marca;
 	string modelo;
 	string matricula;
 	vector<Standard *> standards;
 public:
-
-	/**
-	 * @brief Construtor por omissao de Veiculo
-	 *
-	 * Cria um objecto Veiculo, com um conjunto de atributos (marca, modelo, matricula) inicializados em branco.
-	 */
-	Veiculo();
 
 	/**
 	 * @brief Construtor de Veiculo
@@ -46,7 +39,7 @@ public:
 	 * @param matricula Matricula do veiculo a ser criado
 	 */
 	Veiculo(string mc, string mdl, string mt);
-
+	Veiculo(string mc, string mdl, string mt, int id);
 	/**@ brief Destrutor de Veiculo
 	 *
 	 */

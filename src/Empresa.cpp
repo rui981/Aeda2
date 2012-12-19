@@ -403,7 +403,7 @@ void Empresa::leCarros() {
 	fstream file;
 	string id, brand, model, lp, tip, nre, nome, descricao, precoe, duracaoe, datai,
 	dataf;
-	int nr;
+	int nr,id1;
 	vector<Standard*> stand;
 
 	double preco, duracao;
@@ -418,6 +418,7 @@ void Empresa::leCarros() {
 			getline(file, tip);
 			getline(file, nre);
 			nr = atoi(nre.c_str());
+			id1 = atoi(id.c_str());
 			for (unsigned int i = 0; i < nr; i++) {
 				getline(file, nome);
 				getline(file, descricao);
@@ -434,7 +435,8 @@ void Empresa::leCarros() {
 			}
 
 			if(brand.size() > 0) {
-				Carro * v = new Carro(brand, model, lp, tip);
+				cout << "matricula" << lp << endl;
+				Carro * v = new Carro(brand, model, lp, tip, id1);
 				v->setStandards(stand);
 				novoCarro(v);
 			}
@@ -449,7 +451,7 @@ void Empresa::leBuses() {
 	string id, brand, model, lp, nre, nome, descricao, precoe, duracaoe, datai,
 	dataf;
 	double preco, duracao;
-	int nr;
+	int nr,id1;
 	vector<Standard*> stand;
 
 	file.open("Buses.txt");
@@ -463,6 +465,7 @@ void Empresa::leBuses() {
 
 			getline(file, nre);
 			nr = atoi(nre.c_str());
+			id1 = atoi(id.c_str());
 			for (unsigned int i = 0; i < nr; i++) {
 				getline(file, nome);
 				getline(file, descricao);
@@ -479,7 +482,7 @@ void Empresa::leBuses() {
 			}
 
 			if(brand.size() > 0) {
-				Bus * v = new Bus(brand, model, lp);
+				Bus * v = new Bus(brand, model, lp, id1);
 				v->setStandards(stand);
 				novoBus(v);
 			}
@@ -493,7 +496,7 @@ void Empresa::leCamioes() {
 	fstream file;
 	string id, brand, model, lp, cat, nre, nome, descricao, precoe, duracaoe, datai,
 	dataf;
-	int nr;
+	int nr,id1;
 	double preco, duracao;
 	vector<Standard *> stand;
 	int control = 0;
@@ -510,6 +513,7 @@ void Empresa::leCamioes() {
 
 			getline(file, nre);
 			nr = atoi(nre.c_str());
+			id1 = atoi(id.c_str());
 			for (unsigned int i = 0; i < nr; i++) {
 				getline(file, nome);
 				getline(file, descricao);
@@ -526,7 +530,7 @@ void Empresa::leCamioes() {
 			}
 
 			if(brand.size() > 0) {
-				Camiao * v = new Camiao(brand, model, lp, cat);
+				Camiao * v = new Camiao(brand, model, lp, cat, id1);
 				v->setStandards(stand);
 				novoCamiao(v);
 			}

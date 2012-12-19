@@ -7,10 +7,10 @@
 
 #include "Bus.h"
 
-Bus::Bus()
+Bus::Bus(string mc, string mdl, string mt):Veiculo(mc,mdl,mt)
 {}
 
-Bus::Bus(string mc, string mdl, string mt):Veiculo(mc,mdl,mt)
+Bus::Bus(string mc, string mdl, string mt, int id):Veiculo(mc,mdl,mt,id)
 {}
 
 Bus::~Bus()

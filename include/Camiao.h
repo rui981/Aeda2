@@ -22,14 +22,6 @@ private:
 public:
 
 	/**
-	 * @brief Construtor por omissao de Camiao
-	 *
-	 * Cria um objecto Bus, com um conjunto de atributos (marca, modelo, matricula, categoria).
-	 * Invoca o construtor da classe Veiculo (classe pai).
-	 */
-	Camiao();
-
-	/**
 	  	 * @brief Construtor de Camiao
 	  	 *
 	  	 * Cria um objecto Camiao com um conjunto de atributos (marca, modelo, matricula, categoria).
@@ -41,6 +33,7 @@ public:
 	  	 * @param cat Categoria do Camiao a ser criado
 	  	 */
 	Camiao(string mc, string mdl, string mt, string cat);
+	Camiao(string mc, string mdl, string mt, string cat, int id);
 
 
 	/**

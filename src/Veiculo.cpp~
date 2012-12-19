@@ -7,25 +7,21 @@
 
 #include "Veiculo.h"
 
-int Veiculo::ultimoID = 0;
+int Veiculo::ID = 1;
 
 Veiculo::Veiculo(string mc, string mdl, string mt, int id) {
 
-	this->id = id;
+	id = ultimoID;
 	marca = mc;
 	modelo = mdl;
 	matricula = mt;
-
-	if(id > ultimoID) {
-		ultimoID = id;
-	}
 
 }
 
 Veiculo::Veiculo(string mc, string mdl, string mt) {
 
-	ultimoID++;
 	id = ultimoID;
+	ultimoID++;
 	marca = mc;
 	modelo = mdl;
 	matricula = mt;

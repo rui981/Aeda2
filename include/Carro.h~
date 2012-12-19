@@ -25,6 +25,14 @@ private:
 public:
 
   /**
+  	 * @brief Construtor por omissao de Carro
+  	 *
+  	 * Cria um objecto Carro, com um conjunto de atributos (marca, modelo, matricula, tipo).
+  	 * Invoca o construtor da classe Veiculo (classe pai).
+  	 */
+  Carro();
+
+  /**
   	  	 * @brief Construtor de Carro
   	  	 *
   	  	 * Cria um objecto Carro com um conjunto de atributos (marca, modelo, matricula, tipo).

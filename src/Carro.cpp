@@ -7,10 +7,12 @@
 
 #include "Carro.h"
 
-Carro::Carro()
-{}
-
 Carro::Carro(string mc, string mdl, string mt, string tp):Veiculo(mc,mdl,mt)
+{
+	tipo = tp;
+}
+
+Carro::Carro(string mc, string mdl, string mt, string tp, int id):Veiculo(mc,mdl,mt,id)
 {
 	tipo = tp;
 }

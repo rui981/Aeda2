@@ -20,13 +20,6 @@ class Bus: public Veiculo
 {
 public:
 
-	 /**
-	  	 * @brief Construtor por omissao de Bus
-	  	 *
-	  	 * Cria um objecto Bus, com um conjunto de atributos (marca, modelo, matricula).
-	  	 * Invoca o construtor da classe Veiculo (classe pai).
-	  	 */
-  Bus();
 
   /**
   	 * @brief Construtor de Bus
@@ -39,7 +32,7 @@ public:
   	 * @param mt Matricula do Bus a ser criado
   	 */
   Bus(string mc, string mdl, string mt);
-
+  Bus(string mc, string mdl, string mt, int id);
 
 	/**
 	 * @brief Destrutor de Bus

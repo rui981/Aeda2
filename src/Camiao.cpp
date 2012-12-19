@@ -7,13 +7,17 @@
 
 #include "Camiao.h"
 
-Camiao::Camiao()
-{}
 
 Camiao::Camiao(string mc, string mdl, string mt, string cat):Veiculo(mc,mdl,mt)
 {
 	categoria = cat;
 }
+
+Camiao::Camiao(string mc, string mdl, string mt, string cat, int id):Veiculo(mc,mdl,mt,id)
+{
+	categoria = cat;
+}
+
 
 Camiao::~Camiao()
 {}
