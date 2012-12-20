@@ -37,8 +37,8 @@ class Cliente : public Pessoa {
 		 */
 	Cliente(string nome, string contacto, string morada);
 	Cliente(string nome, string contacto, string morada, int id);
-
-	int getId();
+	bool clienteInativo;
+	int getId() const;
 
 
 	/**

@@ -7,7 +7,7 @@ using namespace std;
 
 
 Cliente::Cliente(string nome, string contacto, string morada):Pessoa(nome, contacto, morada){
-
+clienteInativo= false;
 
 }
 
@@ -16,7 +16,7 @@ Cliente::Cliente(string nome, string contacto, string morada, int id):Pessoa(nom
 
 }
 
-int Cliente::getId(){
+int Cliente::getId() const{
 	return id;
 }
 

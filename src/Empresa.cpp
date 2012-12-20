@@ -30,6 +30,20 @@ Empresa::Empresa() {
 
 }
 
+void Empresa::insereInativos(Cliente cl){
+	inativos.insert(cl);
+}
+
+void Empresa::apagaInativos(Cliente cl){
+	tr1::unordered_set<Cliente, hash,eq>::iterator it;
+
+	it= inativos.find(cl);
+	if(it!= inativos.end()){
+		inativos.erase(it);
+	}
+
+}
+
 Empresa::~Empresa() {
 
 }

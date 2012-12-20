@@ -1,6 +1,6 @@
 #include "Pessoa.h"
 
-int Pessoa::ultimoId = 0;
+int Pessoa::ultimoId = 1;
 
 
 Pessoa::Pessoa (string nome, string contacto, string morada){

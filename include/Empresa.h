@@ -1,6 +1,8 @@
 #ifndef EMPRESA_H
 #define EMPRESA_H
 
+#include<tr1/unordered_set>
+
 #include "Pessoa.h"
 #include "Cliente.h"
 #include "Funcionario.h"
@@ -17,8 +19,38 @@
 #include <vector>
 using namespace std;
 
+
+struct eq {
+	bool operator() (const Cliente & cl1, const Cliente &cl2) const{
+		if(cl1.getId() == cl2.getId()){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+};
+
+
+struct hash {
+	int operator() (const Cliente & cli1) const{
+		string nome= cli1.getNome();
+		int acc=0;
+		for(unsigned int i =0;i< nome.size();i++){
+			acc += 7*i+nome[i];
+		}
+		return acc;
+	}
+};
+
 class Empresa {
 private:
+
+//hashtable
+	tr1::unordered_set<Cliente,hash, eq> inativos;
+
+
+
 	vector<Pessoa*> pessoas;
 	vector<Cliente*> clientes;
 	vector<Funcionario*> funcionarios;
@@ -31,6 +63,14 @@ private:
 	vector<Standard *> standards;
 	vector<Servico *> servicos;
 public:
+	void insereInativos(Cliente cl);
+	void apagaInativos(Cliente cl);
+
+
+
+
+
+
 	/**
 	 * @brief Construtor de Empresa
 	 *
