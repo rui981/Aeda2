@@ -1,7 +1,11 @@
 #ifndef EMPRESA_H
 #define EMPRESA_H
 
-#include<tr1/unordered_set>
+#include <tr1/unordered_set>
+#include <list>
+#include <algorithm>
+#include "EmpresaAluguer.h"
+
 
 #include "Pessoa.h"
 #include "Cliente.h"
@@ -48,8 +52,9 @@ private:
 
 //hashtable
 	tr1::unordered_set<Cliente,hash, eq> inativos;
-
-
+//fila de prioridade
+	//priority_queue<EmpresaAluguer> * aluguer;
+	list<EmpresaAluguer *> empresas_aluguer;
 
 	vector<Pessoa*> pessoas;
 	vector<Cliente*> clientes;
@@ -348,6 +353,11 @@ public:
 	 *Opcao do menu para listar os Servicos que um Veiculo tem.
 	 */
 	void listaVeiculosServicos(Veiculo *v);
+
+	void addEmpresaAluguer(EmpresaAluguer * emp);
+	list<EmpresaAluguer *> & getEmpresasAluguer();
+	//priority_queue<EmpresaAluguer> * getQueue() const;
+	//void setQueue(priority_queue<EmpresaAluguer> * pq);
 
 };
 #endif
