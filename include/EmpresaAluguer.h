@@ -13,12 +13,13 @@ private:
 	int veiculos_disp;
 public:
 	EmpresaAluguer(string nome, int dist, int numVeic);
+	EmpresaAluguer(string nome, int dist);
 	void adicionaVeiculo(Veiculo * v);
 	void removeVeiculo(int indice);
 	int getNumVeiculosDisp() const;
 	string getNome() const;
 	int getDistancia() const;
-	vector<Veiculo *> getVeiculos() const;
+	vector<Veiculo *> getVeiculos();
 };
 
 bool compare(EmpresaAluguer * e1, EmpresaAluguer * e2);

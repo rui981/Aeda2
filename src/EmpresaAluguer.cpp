@@ -5,9 +5,16 @@ EmpresaAluguer::EmpresaAluguer(string nome, int dist, int numVeic) {
 	this->nome = nome;
 	this->distancia = dist;
 	this->veiculos = vector<Veiculo *>();
-	//veiculos_disp = veiculos.size();
 	this->veiculos_disp = numVeic;
 }
+
+EmpresaAluguer::EmpresaAluguer(string nome, int dist) {
+	this->nome = nome;
+	this->distancia = dist;
+	this->veiculos = vector<Veiculo *>();
+	veiculos_disp = 0;
+}
+
 
 void EmpresaAluguer::adicionaVeiculo(Veiculo * v){
 	veiculos.push_back(v);
@@ -31,7 +38,7 @@ int EmpresaAluguer::getDistancia() const{
 	return distancia;
 }
 
-vector<Veiculo *> EmpresaAluguer::getVeiculos() const{
+vector<Veiculo *> EmpresaAluguer::getVeiculos() {
 	return veiculos;
 }
 

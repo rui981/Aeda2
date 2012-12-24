@@ -181,9 +181,9 @@ void Empresa::escreveFuncionarios() {
 					j++) {
 				ficheiro << endl;
 				ficheiro << funcionarios[i]->getVeiculos()[j]->getMarca()
-								<< endl;
+										<< endl;
 				ficheiro << funcionarios[i]->getVeiculos()[j]->getMatricula()
-								<< endl;
+										<< endl;
 				ficheiro << funcionarios[i]->getVeiculos()[j]->getModelo();
 				if (j != funcionarios[i]->getVeiculos().size() - 1) {
 					ficheiro << endl;
@@ -218,7 +218,7 @@ void Empresa::escreveCarros() {
 				filestr << carros[i]->getStandards()[j]->getPreco() << endl;
 				filestr << carros[i]->getStandards()[j]->getDuracao() << endl;
 				filestr << carros[i]->getStandards()[j]->getDataInicio()
-										<< endl;
+												<< endl;
 				filestr << carros[i]->getStandards()[j]->getDataFim();
 				if (j != carros[i]->getStandards().size() - 1) {
 					filestr << endl;
@@ -251,12 +251,12 @@ void Empresa::escreveBuses() {
 				if(j==0) filestr << endl;
 				filestr << buses[i]->getStandards()[j]->getNome() << endl;
 				filestr << buses[i]->getStandards()[j]->getDescricao()
-											<< endl;
+													<< endl;
 				filestr << buses[i]->getStandards()[j]->getPreco() << endl;
 				filestr << buses[i]->getStandards()[j]->getDuracao()
-											<< endl;
+													<< endl;
 				filestr << buses[i]->getStandards()[j]->getDataInicio()
-											<< endl;
+													<< endl;
 				filestr << buses[i]->getStandards()[j]->getDataFim();
 
 				if (j != buses[i]->getStandards().size() - 1) {
@@ -290,13 +290,13 @@ void Empresa::escreveCamioes() {
 				if(j==0) filestr << endl;
 				filestr << camioes[i]->getStandards()[j]->getNome() << endl;
 				filestr << camioes[i]->getStandards()[j]->getDescricao()
-											<< endl;
+													<< endl;
 				filestr << camioes[i]->getStandards()[j]->getPreco()
-											<< endl;
+													<< endl;
 				filestr << camioes[i]->getStandards()[j]->getDuracao()
-											<< endl;
+													<< endl;
 				filestr << camioes[i]->getStandards()[j]->getDataInicio()
-											<< endl;
+													<< endl;
 				filestr << camioes[i]->getStandards()[j]->getDataFim();
 				if (j != camioes[i]->getStandards().size() - 1) {
 					filestr << endl;
@@ -784,7 +784,7 @@ void Empresa::menu() {
 				do {
 					for (unsigned int i = 0; i < funcionarios.size(); i++) {
 						cout << i + 1 << "   " << funcionarios[i]->getNome()
-										<< endl;
+												<< endl;
 					}
 					cout << "Qual dos funcionarios deseja eliminar?" << endl;
 
@@ -873,7 +873,7 @@ void Empresa::menu() {
 				int numeracao, conf;
 				for (unsigned int i = 0; i < funcionarios.size(); i++) {
 					cout << i + 1 << "   " << funcionarios[i]->getNome()
-									<< endl;
+											<< endl;
 				}
 
 				cout << "Qual dos funcionarios deseja examinar?" << endl;
@@ -1048,7 +1048,7 @@ void Empresa::menu() {
 				do {
 					for (unsigned int i = 0; i < clientes.size(); i++) {
 						cout << i + 1 << "   " << clientes[i]->getNome()
-										<< endl;
+												<< endl;
 					}
 
 					cout << "Qual dos clientes deseja eliminar?" << endl;
@@ -1346,7 +1346,7 @@ void Empresa::menu() {
 				do {
 					for (unsigned int i = 0; i < standards.size(); i++) {
 						cout << i + 1 << "  " << standards[i]->getNome()
-										<< endl;
+												<< endl;
 					}
 
 					cout << "Qual o servico que deseja remover?" << endl;
@@ -1514,7 +1514,7 @@ void Empresa::menu() {
 					cout << "Que servico deseja adicionar?" << endl;
 					for (unsigned int i = 0; i < standards.size(); i++) {
 						cout << i + 1 << "  " << standards[i]->getNome()
-										<< endl;
+												<< endl;
 					}
 
 					try {
@@ -3654,31 +3654,57 @@ list<EmpresaAluguer *> & Empresa::getEmpresasAluguer() {
 	return empresas_aluguer;
 }
 
-/*
-priority_queue<EmpresaAluguer> * Empresa::getQueue() const{
-	return aluguer;
-}
+list<EmpresaAluguer *> & Empresa::removerEmpresaAluguer(string nome) {
+	list<EmpresaAluguer *>::iterator it;
 
-void Empresa::setQueue(priority_queue<EmpresaAluguer> * pq) {
-	aluguer = pq;
-}
-
-void Empresa::addEmpresas(vector<EmpresaAluguer> vec) {
-	priority_queue<EmpresaAluguer> * aux = new priority_queue<EmpresaAluguer>();
-	vector<EmpresaAluguer>::const_iterator it;
-
-	sort(vec.begin(),vec.end());
-
-	for(it = vec.begin(); it!= vec.end(); it++) {
-		aluguer->push((*it));
-		cout << (*it).getNome() << endl;
+	for(it = empresas_aluguer.begin(); it != empresas_aluguer.end(); it++){
+		if((*it)->getNome() == nome) {
+			cout << "entrei" << endl;
+			empresas_aluguer.erase(it);
+			cout << "apaguei" << endl;
+			break;
+		}
 	}
 
-	//this->setQueue(aux);
+	empresas_aluguer.sort(compare);
+	return empresas_aluguer;
+}
 
-	while(!getQueue()->empty()) {
-			cout << "Empresa aluguer: " << getQueue()->top().getNome() << endl;
-			getQueue()->pop();
-		}
 
-}*/
+void Empresa::clienteRequisitaViatura(Cliente * c) {
+	pair<map<Cliente*,Veiculo*>::iterator,bool> it;
+
+	//Obter primeiro veiculo da empresa com mais veiculos disponiveis
+	Veiculo * v = empresas_aluguer.front()->getVeiculos()[0];
+
+	//associar ao cliente
+	it = alugueres.insert(pair<Cliente*,Veiculo*> (c,v));
+	if(it.second == false) {
+		cout << "Cliente: " << c->getNome() << " " << "ja requisitou um veiculo" << endl;
+	}
+	else {
+		//Remover do vector veiculos da empresa de aluguer o primeiro veiculo
+		empresas_aluguer.front()->removeVeiculo(0);
+		empresas_aluguer.sort(compare);
+	}
+
+}
+
+void Empresa::printClienteViaturaAlugada() {
+	map<Cliente*,Veiculo*>::const_iterator it;
+
+	for(it = alugueres.begin(); it != alugueres.end(); it++) {
+		cout << "Nome do cliente: " << it->first->getNome() << endl;
+		cout << "Veiculo alugado: " << it->second->getMarca() << endl << endl;
+	}
+
+}
+
+
+
+
+
+
+
+
+
