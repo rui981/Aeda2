@@ -6,7 +6,7 @@
 #define SIZETEXTO 20
 
 
-Empresa::Empresa() {
+Empresa::Empresa():pecas(Peca()) {
 	empresas_aluguer = list<EmpresaAluguer *>();
 	EmpresasAluguerbegin();
 
@@ -20,6 +20,8 @@ Empresa::Empresa() {
 		cout << "Nada para ler no ficheiro " << endl;
 	}
 
+
+	lePecas();
 	leFuncionarios();
 
 	leStandards();
@@ -50,6 +52,89 @@ void Empresa::apagaInativos(Cliente cl){
 Empresa::~Empresa() {
 
 }
+
+
+
+
+//bst
+
+
+BST<Peca> Empresa::getPecas() const{
+	return pecas;
+}
+
+void Empresa::adicionaPeca(const Peca &p1){
+
+	BSTItrIn<Peca> it (pecas);
+	Peca jaExiste=Peca();
+
+	while(!it.isAtEnd()){
+
+		if(it.retrieve()==p1){
+			cout << "Esta peca ja existe" << endl;
+			return;
+		}
+		it.advance();
+	}
+
+	pecas.insert(p1);
+
+}
+
+
+
+void Empresa::removePeca(const Peca &p1){
+
+	BSTItrIn<Peca> it(pecas);
+	Peca rem = Peca();
+
+	while(!it.isAtEnd() && it.retrieve()<p1){
+
+		it.advance();
+	}
+
+	if(!it.isAtEnd()&&it.retrieve()==p1){
+		rem=it.retrieve();
+		pecas.remove(rem);
+		return;
+	}
+
+	cout << "Peca nao existente" << endl;
+	return;
+
+}
+
+
+void Empresa::alteraStock(const Peca &p1,int novoStock){
+	BSTItrIn<Peca>it(pecas);
+
+	while(!it.isAtEnd()){
+		if(it.retrieve()==p1){
+			it.retrieve().setStock(novoStock);
+			return;
+		}
+
+	}
+
+	cout << "Peca não existente" << endl;
+	return;
+}
+
+int Empresa::getNumPecas() const{
+	int n=0;
+	BSTItrIn<Peca>it(pecas);
+
+		while(!it.isAtEnd()){
+			n++;
+			it.advance();
+			}
+return n;
+
+}
+
+
+
+
 
 ///////////////////////Funcoes usadas em todos os menus ////////////////////
 void Empresa::clear() {
@@ -145,6 +230,37 @@ void Empresa::distribuiVeiculos() {
 /////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////Escreve nos ficheiros respectivos////////
+
+
+
+void Empresa::escrevePecas(){
+	fstream ficheiro;
+	BSTItrIn<Peca> it(pecas);
+	ficheiro.open("Pecas.txt",fstream::out);
+	int j=0;
+
+	if(ficheiro.is_open()){
+
+		while (!it.isAtEnd())
+		{
+			ficheiro << it.retrieve().getCodigo() << endl;
+			ficheiro << it.retrieve().getDesignacao() << endl;
+			ficheiro << it.retrieve().getLoja() << endl;
+			ficheiro << it.retrieve().getStock();
+			cout << getNumPecas() << endl;
+			if(j!=getNumPecas()){
+				ficheiro << endl;
+			}
+			it.advance();
+
+		}
+
+	}
+	ficheiro.close();
+
+}
+
+
 
 void Empresa::escreveClientes() {
 	fstream ficheiro;
@@ -337,6 +453,37 @@ void Empresa::escreveStandards() {
 //////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////Le ficheiros respectivos//////////////////////
+
+void Empresa::lePecas(){
+
+	fstream ficheiro;
+		string designacao, loja;
+		string cod, sto;
+		int codigo, stock;
+
+		ficheiro.open("Pecas.txt", ios::in);
+
+		if (ficheiro.is_open()) {
+			while (!ficheiro.eof()) {
+
+				getline(ficheiro, cod);
+				getline(ficheiro, designacao);
+				getline(ficheiro, loja);
+				getline(ficheiro, sto);
+				codigo = atoi(cod.c_str());
+				stock = atoi(sto.c_str());
+
+				Peca p1 = Peca(codigo,designacao,stock,loja);
+				adicionaPeca(p1);
+			}
+		}
+
+
+
+}
+
+
+
 
 void Empresa::leClientes() {
 	fstream ficheiro;
@@ -599,7 +746,9 @@ void Empresa::menu() {
 		cout << "Menu Veiculos-----------------3" << endl;
 		cout << "Servicos----------------------4" << endl;
 		cout << "Empresas Aluguer--------------5" << endl;
+		cout << "Pecas-------------------------6" << endl;
 		cout << "Sair--------------------------0" << endl;
+
 		cout << "Escolha a sua opcao" << endl;
 		cout << "Opcao : ";
 
@@ -610,7 +759,7 @@ void Empresa::menu() {
 			op=atoi(ope.c_str());
 
 
-			if(op < 0 || op > 5) {
+			if(op < 0 || op > 7) {
 				OFBOpcoes o;
 				throw o;
 			}			
@@ -912,6 +1061,9 @@ void Empresa::menu() {
 				pause();
 
 			} break;
+
+
+
 
 
 			case 0: {
@@ -1737,6 +1889,10 @@ void Empresa::menu() {
 				pause();
 			}
 			break;
+
+
+
+
 			case 0: {
 
 			}
@@ -1746,6 +1902,150 @@ void Empresa::menu() {
 		}
 		break;
 
+		case 6: {
+					string opCe;
+					int opC;
+
+					clear();
+
+					cout << "******************Menu Pecas*******************" << endl
+							<< endl;
+					cout << "Adicionar Peca---------------------------1" << endl;
+					cout << "Remover Peca-----------------------------2" << endl;
+					cout << "Modificar Stock--------------------------3" << endl;
+					cout << "Analisar Peca------------------------------4" << endl;
+					cout << "Sair-------------------------------------0" << endl;
+
+					getline(cin, opCe);
+					opC = atoi(opCe.c_str());
+
+
+					switch(opC){
+					case 1: {
+						string designacao,sto, loja;
+						int stock;
+
+						cout << "Insira designacao" << endl;
+						getline(cin, designacao);
+
+						cout << "Insira stock" << endl;
+						getline(cin, sto);
+						stock = atoi(sto.c_str());
+
+						cout << "Insira loja" << endl;
+						getline(cin,loja);
+
+						Peca s = Peca(designacao,stock,loja);
+						adicionaPeca(s);
+
+
+					}break;
+
+					case 2:{
+						string op;
+						int opc;
+						Peca p1 = Peca();
+						BSTItrIn<Peca> it(pecas);
+						while (!it.isAtEnd())
+						{
+							cout << it.retrieve().getCodigo() <<	" " << it.retrieve().getDesignacao() << endl;
+							it.advance();
+						}
+
+						cout << "Qual das pecas deseja remover?" << endl;
+						getline(cin,op);
+						opc=atoi(op.c_str());
+
+
+						BSTItrIn<Peca>itt(pecas);
+
+						while(!itt.isAtEnd()){
+
+							if(itt.retrieve().getCodigo()==opc){
+								p1=itt.retrieve();
+								removePeca(p1);
+							}
+							itt.advance();
+
+						}
+
+					}break;
+
+					case 3:{
+						string op,op2;
+						int opc,opc2;
+						Peca p1 = Peca();
+						BSTItrIn<Peca> it(pecas);
+						while (!it.isAtEnd())
+						{
+							cout << it.retrieve().getCodigo() <<	" " << it.retrieve().getDesignacao() << endl;
+							it.advance();
+						}
+						cout << "Qual das pecas deseja alterar?" << endl;
+						getline(cin,op);
+						opc=atoi(op.c_str());
+
+
+						BSTItrIn<Peca>itt(pecas);
+						while(!itt.isAtEnd()){
+
+							if(itt.retrieve().getCodigo()==opc){
+								cout << "Qual o novo stock? " << endl;
+								getline(cin,op2);
+								opc2=atoi(op2.c_str());
+								itt.retrieve().setStock(opc2);
+								break;
+
+							}
+							itt.advance();
+
+						}
+
+					}break;
+
+					case 4:{
+						string op,op2;
+						int opc,opc2;
+						Peca p1 = Peca();
+						BSTItrIn<Peca> it(pecas);
+
+						while (!it.isAtEnd())
+						{
+							cout << it.retrieve().getCodigo() <<	" " << it.retrieve().getDesignacao() << endl;
+							it.advance();
+						}
+						cout << "Qual das pecas deseja analisar?" << endl;
+						getline(cin,op);
+						opc=atoi(op.c_str());
+
+
+						BSTItrIn<Peca>itt(pecas);
+						while(!itt.isAtEnd()){
+
+							if(itt.retrieve().getCodigo()==opc){
+								cout << itt.retrieve() << endl;
+								break;
+
+							}
+							itt.advance();
+
+						}
+
+
+					}
+
+
+
+					}
+
+
+
+
+
+
+					pause();
+				}
+				break;
 
 		case 0: {
 			escreveStandards();
@@ -1754,6 +2054,9 @@ void Empresa::menu() {
 			escreveBuses();
 			escreveCamioes();
 			escreveCarros();
+			cout << "ANTES" << endl;
+			escrevePecas();
+			cout << "DJSFHSFGDFRGJFRGEJTG" << endl;
 			op = 0;
 		}
 		break;

@@ -24,8 +24,3 @@ void Servico::setDataInicio(string data) {
 void Servico::setDataFim(string data) {
 	dataFim = data;
 }
-
-
-
-
-

@@ -1,7 +1,13 @@
 #ifndef EMPRESA_H
 #define EMPRESA_H
 
-#include<tr1/unordered_set>
+
+#include <tr1/unordered_set>
+#include <list>
+#include <algorithm>
+#include <map>
+#include "EmpresaAluguer.h"
+
 
 #include "Pessoa.h"
 #include "Cliente.h"
@@ -15,11 +21,11 @@
 #include "Servico.h"
 #include "Standart.h"
 
-#include <iostream>
-#include <vector>
-
+#include "Peca.h"
 #include "BST.h"
 
+#include <iostream>
+#include <vector>
 using namespace std;
 
 
@@ -51,9 +57,13 @@ private:
 
 //hashtable
 	tr1::unordered_set<Cliente,hash, eq> inativos;
+//fila de prioridade
+	//priority_queue<EmpresaAluguer> * aluguer;
+	list<EmpresaAluguer *> empresas_aluguer;
+	map<Cliente*,Veiculo*> alugueres;
 
-//bst
-	BST<Peca> pecas;
+	//bst
+		BST<Peca> pecas;
 
 
 	vector<Pessoa*> pessoas;
@@ -72,7 +82,6 @@ public:
 	void apagaInativos(Cliente cl);
 
 
-
 	//bst
 	BST<Peca> getPecas() const;
 	void adicionaPeca(const Peca &p1);
@@ -82,6 +91,7 @@ public:
 	void lePecas();
 	void escrevePecas();
 	int getNumPecas()const;
+
 
 
 
@@ -362,6 +372,16 @@ public:
 	 *Opcao do menu para listar os Servicos que um Veiculo tem.
 	 */
 	void listaVeiculosServicos(Veiculo *v);
+
+	void addEmpresaAluguer(EmpresaAluguer * emp);
+	list<EmpresaAluguer *> & getEmpresasAluguer();
+	list<EmpresaAluguer *> & removerEmpresaAluguer(string nome);
+	void clienteRequisitaViatura(Cliente * c);
+	void printClienteViaturaAlugada();
+	void listarEmpresasAluguer();
+	void EmpresasAluguerbegin();
+	//priority_queue<EmpresaAluguer> * getQueue() const;
+	//void setQueue(priority_queue<EmpresaAluguer> * pq);
 
 };
 #endif

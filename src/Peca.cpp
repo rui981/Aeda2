@@ -56,7 +56,8 @@ int Peca::ultimoCod=1;
 			this->designacao=designacao;
 			this->stock=stock;
 			this->loja=loja;
-		}
+			ultimoCod=codigo;
+	}
 
 
 	Peca::Peca(){
