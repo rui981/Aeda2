@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 #define SIZETEXTO 20
-
+//EU MUDEI MERDAS
 
 Empresa::Empresa():pecas(Peca()) {
 
