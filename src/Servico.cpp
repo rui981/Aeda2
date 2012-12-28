@@ -1,6 +1,6 @@
 #include "Servico.h"
 
-Servico::Servico(string dataInicio, string dataFim) {
+Servico::Servico(string data_inicio, string data_fim) {
 	this->dataInicio = dataInicio;
 	this->dataFim = dataFim;
 }
@@ -24,8 +24,3 @@ void Servico::setDataInicio(string data) {
 void Servico::setDataFim(string data) {
 	dataFim = data;
 }
-
-
-
-
-

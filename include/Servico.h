@@ -11,9 +11,6 @@
 
 #include <string>
 #include <vector>
-
-#include "BST.h"
-#include "Peca.h"
 using namespace std;
 
 
@@ -79,8 +76,6 @@ public:
 		 */
 	void setDataFim(string data);
 	//virtual void imprime();
-
-
 
 };
 
