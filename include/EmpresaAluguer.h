@@ -19,7 +19,7 @@ public:
 	int getNumVeiculosDisp() const;
 	string getNome() const;
 	int getDistancia() const;
-	vector<Veiculo *> getVeiculos();
+	vector<Veiculo *> & getVeiculos();
 };
 
 bool compare(EmpresaAluguer * e1, EmpresaAluguer * e2);

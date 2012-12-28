@@ -8,6 +8,7 @@
 
 Empresa::Empresa() {
 	empresas_aluguer = list<EmpresaAluguer *>();
+	EmpresasAluguerbegin();
 
 	try{
 		leClientes();
@@ -181,9 +182,9 @@ void Empresa::escreveFuncionarios() {
 					j++) {
 				ficheiro << endl;
 				ficheiro << funcionarios[i]->getVeiculos()[j]->getMarca()
-										<< endl;
+																										<< endl;
 				ficheiro << funcionarios[i]->getVeiculos()[j]->getMatricula()
-										<< endl;
+																										<< endl;
 				ficheiro << funcionarios[i]->getVeiculos()[j]->getModelo();
 				if (j != funcionarios[i]->getVeiculos().size() - 1) {
 					ficheiro << endl;
@@ -218,7 +219,7 @@ void Empresa::escreveCarros() {
 				filestr << carros[i]->getStandards()[j]->getPreco() << endl;
 				filestr << carros[i]->getStandards()[j]->getDuracao() << endl;
 				filestr << carros[i]->getStandards()[j]->getDataInicio()
-												<< endl;
+																												<< endl;
 				filestr << carros[i]->getStandards()[j]->getDataFim();
 				if (j != carros[i]->getStandards().size() - 1) {
 					filestr << endl;
@@ -251,12 +252,12 @@ void Empresa::escreveBuses() {
 				if(j==0) filestr << endl;
 				filestr << buses[i]->getStandards()[j]->getNome() << endl;
 				filestr << buses[i]->getStandards()[j]->getDescricao()
-													<< endl;
+																													<< endl;
 				filestr << buses[i]->getStandards()[j]->getPreco() << endl;
 				filestr << buses[i]->getStandards()[j]->getDuracao()
-													<< endl;
+																													<< endl;
 				filestr << buses[i]->getStandards()[j]->getDataInicio()
-													<< endl;
+																													<< endl;
 				filestr << buses[i]->getStandards()[j]->getDataFim();
 
 				if (j != buses[i]->getStandards().size() - 1) {
@@ -290,13 +291,13 @@ void Empresa::escreveCamioes() {
 				if(j==0) filestr << endl;
 				filestr << camioes[i]->getStandards()[j]->getNome() << endl;
 				filestr << camioes[i]->getStandards()[j]->getDescricao()
-													<< endl;
+																													<< endl;
 				filestr << camioes[i]->getStandards()[j]->getPreco()
-													<< endl;
+																													<< endl;
 				filestr << camioes[i]->getStandards()[j]->getDuracao()
-													<< endl;
+																													<< endl;
 				filestr << camioes[i]->getStandards()[j]->getDataInicio()
-													<< endl;
+																													<< endl;
 				filestr << camioes[i]->getStandards()[j]->getDataFim();
 				if (j != camioes[i]->getStandards().size() - 1) {
 					filestr << endl;
@@ -597,6 +598,7 @@ void Empresa::menu() {
 		cout << "Menu Cliente------------------2" << endl;
 		cout << "Menu Veiculos-----------------3" << endl;
 		cout << "Servicos----------------------4" << endl;
+		cout << "Empresas Aluguer--------------5" << endl;
 		cout << "Sair--------------------------0" << endl;
 		cout << "Escolha a sua opcao" << endl;
 		cout << "Opcao : ";
@@ -608,7 +610,7 @@ void Empresa::menu() {
 			op=atoi(ope.c_str());
 
 
-			if(op < 0 || op > 4) {
+			if(op < 0 || op > 5) {
 				OFBOpcoes o;
 				throw o;
 			}			
@@ -784,7 +786,7 @@ void Empresa::menu() {
 				do {
 					for (unsigned int i = 0; i < funcionarios.size(); i++) {
 						cout << i + 1 << "   " << funcionarios[i]->getNome()
-												<< endl;
+																												<< endl;
 					}
 					cout << "Qual dos funcionarios deseja eliminar?" << endl;
 
@@ -873,7 +875,7 @@ void Empresa::menu() {
 				int numeracao, conf;
 				for (unsigned int i = 0; i < funcionarios.size(); i++) {
 					cout << i + 1 << "   " << funcionarios[i]->getNome()
-											<< endl;
+																											<< endl;
 				}
 
 				cout << "Qual dos funcionarios deseja examinar?" << endl;
@@ -929,14 +931,15 @@ void Empresa::menu() {
 			cout << "Remover Cliente------------------2" << endl;
 			cout << "Modificar Cliente----------------3" << endl;
 			cout << "Listar Clientes------------------4" << endl;
-			cout << "Sair---------------------------------0" << endl;
+			cout << "Serviço Aluguer------------------5" << endl;
+			cout << "Sair-----------------------------0" << endl;
 
 			try {
 				getline(cin, opCe);
 				opC = atoi(opCe.c_str());
 
 
-				if(opC < 0 || opC > 4) {
+				if(opC < 0 || opC > 5) {
 					OFBOpcoes of;
 					throw of;
 				}
@@ -1048,7 +1051,7 @@ void Empresa::menu() {
 				do {
 					for (unsigned int i = 0; i < clientes.size(); i++) {
 						cout << i + 1 << "   " << clientes[i]->getNome()
-												<< endl;
+																												<< endl;
 					}
 
 					cout << "Qual dos clientes deseja eliminar?" << endl;
@@ -1160,6 +1163,23 @@ void Empresa::menu() {
 				cout << *(clientes[opcao - 1]) << endl;
 				pause();
 			}
+			case 5: {
+				clear();
+				int opcao;
+				string opcaoe;
+				cout << "Escolha cliente: " << endl;
+
+				for (unsigned int i = 0; i < clientes.size(); i++) {
+					cout << i + 1 << "  " << clientes[i]->getNome() << endl;
+				}
+				getline(cin, opcaoe);
+				opcao = atoi(opcaoe.c_str());
+
+				clienteRequisitaViatura(clientes[opcao - 1]);
+				cout << "Viatura alugada" << endl;
+				pause();
+			}
+
 			break;
 			}
 		}
@@ -1346,7 +1366,7 @@ void Empresa::menu() {
 				do {
 					for (unsigned int i = 0; i < standards.size(); i++) {
 						cout << i + 1 << "  " << standards[i]->getNome()
-												<< endl;
+																												<< endl;
 					}
 
 					cout << "Qual o servico que deseja remover?" << endl;
@@ -1514,7 +1534,7 @@ void Empresa::menu() {
 					cout << "Que servico deseja adicionar?" << endl;
 					for (unsigned int i = 0; i < standards.size(); i++) {
 						cout << i + 1 << "  " << standards[i]->getNome()
-												<< endl;
+																												<< endl;
 					}
 
 					try {
@@ -1680,6 +1700,52 @@ void Empresa::menu() {
 			}
 		} //fim menu servicos
 		break;
+
+
+		case 5: { //Menu Empresa Aluguer
+			string opfe;
+			int op1;
+			clear();
+			cout << "**************Menu Empresa Aluguer***********************"
+					<< endl << endl;
+			cout << "Remover Empresa----------------------1" << endl;
+			cout << "Listar Empresas----------------------2" << endl;
+			cout << "Listar Alugueres---------------------3" << endl;
+			cout << "Sair---------------------------------0" << endl;
+
+			getline(cin, opfe);
+			op1=atoi(opfe.c_str());
+
+			switch(op1) {
+			case 1: {
+				string nome;
+				cout << "Escreva o nome da empresa a remover: " << endl;
+				getline(cin,nome);
+				removerEmpresaAluguer(nome);
+				cout << "Empresa Removida" << endl;
+				pause();
+			}
+			break;
+			case 2: {
+				clear();
+				listarEmpresasAluguer();
+				pause();
+			}break;
+			case 3: {
+				clear();
+				printClienteViaturaAlugada();
+				pause();
+			}
+			break;
+			case 0: {
+
+			}
+			break;
+
+			}
+		}
+		break;
+
 
 		case 0: {
 			escreveStandards();
@@ -3659,9 +3725,7 @@ list<EmpresaAluguer *> & Empresa::removerEmpresaAluguer(string nome) {
 
 	for(it = empresas_aluguer.begin(); it != empresas_aluguer.end(); it++){
 		if((*it)->getNome() == nome) {
-			cout << "entrei" << endl;
 			empresas_aluguer.erase(it);
-			cout << "apaguei" << endl;
 			break;
 		}
 	}
@@ -3701,7 +3765,53 @@ void Empresa::printClienteViaturaAlugada() {
 }
 
 
+void Empresa::listarEmpresasAluguer() {
+	list<EmpresaAluguer *>::const_iterator it1;
+	vector<Veiculo *>::const_iterator it2;
+	cout << endl;
+	for(it1 = empresas_aluguer.begin(); it1!= empresas_aluguer.end(); it1++) {
+		cout << "Nome: " << (*it1)->getNome() << endl;
 
+		cout << "Veiculos disponiveis: " << endl;
+		for(it2 = (*it1)->getVeiculos().begin(); it2!=(*it1)->getVeiculos().end();it2++){
+			cout << (*it2)->getMarca() << endl;
+		}
+
+		cout << "Numero veiculos disponiveis: " << (*it1)->getNumVeiculosDisp() << endl;
+	}
+
+}
+
+void Empresa::EmpresasAluguerbegin() {
+
+	//Empresas de aluguer criadas por defeito
+	EmpresaAluguer * a1 = new EmpresaAluguer("Emp1",0);
+	EmpresaAluguer * a2 = new EmpresaAluguer("Emp2",0);
+	EmpresaAluguer * a3 = new EmpresaAluguer("Emp3",0);
+
+	//Adicionar veiculos a empresa
+	Carro * c1 = new Carro("Nissan","S13","EatMyDust","Coupe");
+	Camiao * t1 = new Camiao("DAF","Cenas","Asshole","Semi");
+	Bus * b1 = new Bus("Mercedes","Sprint","Burro");
+	a1->adicionaVeiculo(c1);
+	a1->adicionaVeiculo(t1);
+	a1->adicionaVeiculo(b1);
+
+	Carro * c2 = new Carro("BMW","E21","EatMyDust","Coupe");
+	Camiao * t2 = new Camiao("Man","Bolha","Asshole","Semi");
+	Bus * b2 = new Bus("Volvo","Bus","Burro");
+	Carro * c3 = new Carro("Nissan","240Z","Stylish","GT");
+	a2->adicionaVeiculo(c2);
+	a2->adicionaVeiculo(t2);
+	a2->adicionaVeiculo(b2);
+	a2->adicionaVeiculo(c3);
+
+	//Adicionar as empresas a lista
+	addEmpresaAluguer(a1);
+	addEmpresaAluguer(a2);
+	addEmpresaAluguer(a3);
+
+}
 
 
 

@@ -38,7 +38,7 @@ int EmpresaAluguer::getDistancia() const{
 	return distancia;
 }
 
-vector<Veiculo *> EmpresaAluguer::getVeiculos() {
+vector<Veiculo *> & EmpresaAluguer::getVeiculos() {
 	return veiculos;
 }
 

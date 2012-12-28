@@ -361,6 +361,8 @@ public:
 	list<EmpresaAluguer *> & removerEmpresaAluguer(string nome);
 	void clienteRequisitaViatura(Cliente * c);
 	void printClienteViaturaAlugada();
+	void listarEmpresasAluguer();
+	void EmpresasAluguerbegin();
 	//priority_queue<EmpresaAluguer> * getQueue() const;
 	//void setQueue(priority_queue<EmpresaAluguer> * pq);
 
