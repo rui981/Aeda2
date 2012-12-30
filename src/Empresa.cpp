@@ -8,7 +8,7 @@
 
 Empresa::Empresa():pecas(Peca()) {
 	empresas_aluguer = list<EmpresaAluguer *>();
-	EmpresasAluguerbegin();
+	//EmpresasAluguerbegin();
 
 	try{
 		leClientes();
@@ -21,6 +21,7 @@ Empresa::Empresa():pecas(Peca()) {
 	}
 
 
+	leEmpresasALuguer();
 	lePecas();
 	leFuncionarios();
 
@@ -116,7 +117,7 @@ void Empresa::alteraStock(const Peca &p1,int novoStock){
 
 	}
 
-	cout << "Peca não existente" << endl;
+	cout << "Peca nï¿½o existente" << endl;
 	return;
 }
 
@@ -124,11 +125,11 @@ int Empresa::getNumPecas() const{
 	int n=0;
 	BSTItrIn<Peca>it(pecas);
 
-		while(!it.isAtEnd()){
-			n++;
-			it.advance();
-			}
-return n;
+	while(!it.isAtEnd()){
+		n++;
+		it.advance();
+	}
+	return n;
 
 }
 
@@ -230,7 +231,76 @@ void Empresa::distribuiVeiculos() {
 /////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////Escreve nos ficheiros respectivos////////
+void Empresa::escreveAlugueres() {
+	fstream ficheiro;
+	map<Cliente*,Veiculo*>::const_iterator it;
 
+	ficheiro.open("Alugueres.txt",fstream::out);
+	int j=0;
+
+	if(ficheiro.is_open()){
+		for(it = alugueres.begin(); it!=alugueres.end();it++) {
+			ficheiro << (*it).first->getNome() << endl;
+			ficheiro << (*it).first->getContacto() << endl;
+			ficheiro << (*it).first->getMorada() << endl;
+			ficheiro << (*it).first->getId() << endl;
+			ficheiro << (*it).second->getMarca() << endl;
+			ficheiro << (*it).second->getModelo() << endl;
+			ficheiro << (*it).second->getMatricula() << endl;
+			ficheiro << (*it).second->getID();
+
+			if(j != alugueres.size()-1){
+				ficheiro << endl;
+			}
+			j++;
+		}
+	}
+	ficheiro.close();
+}
+
+
+
+void Empresa::escreveEmpresasAluguer(){
+	fstream ficheiro;
+	list<EmpresaAluguer *>::const_iterator it;
+	vector<Veiculo *>::const_iterator it1;
+	unsigned int j = 0;
+	unsigned int k;
+	ficheiro.open("EmpresasAluguer.txt",fstream::out);
+
+	if(ficheiro.is_open()){
+
+		for(it = empresas_aluguer.begin(); it!=empresas_aluguer.end();it++)
+		{
+			if(!(*it)->getNome().empty()) {
+
+				ficheiro << (*it)->getNome() << endl;
+				ficheiro << (*it)->getDistancia() << endl;
+				ficheiro << (*it)->getNumVeiculosDisp() << endl;
+
+
+
+				k = 0;
+				for(it1=(*it)->getVeiculos().begin(); it1!=(*it)->getVeiculos().end(); it1++) {
+					ficheiro << (*it1)->getMarca() << endl;
+					ficheiro << (*it1)->getModelo() << endl;
+					ficheiro << (*it1)->getMatricula();
+
+					k++;
+					if(k!= (*it)->getVeiculos().size()) {
+						ficheiro << endl;
+					}
+				}
+			}
+			j++;
+			if(j!=empresas_aluguer.size()) {
+				ficheiro << endl;
+			}
+		}
+
+	}
+	ficheiro.close();
+}
 
 
 void Empresa::escrevePecas(){
@@ -298,9 +368,9 @@ void Empresa::escreveFuncionarios() {
 					j++) {
 				ficheiro << endl;
 				ficheiro << funcionarios[i]->getVeiculos()[j]->getMarca()
-																										<< endl;
+																																												<< endl;
 				ficheiro << funcionarios[i]->getVeiculos()[j]->getMatricula()
-																										<< endl;
+																																												<< endl;
 				ficheiro << funcionarios[i]->getVeiculos()[j]->getModelo();
 				if (j != funcionarios[i]->getVeiculos().size() - 1) {
 					ficheiro << endl;
@@ -335,7 +405,7 @@ void Empresa::escreveCarros() {
 				filestr << carros[i]->getStandards()[j]->getPreco() << endl;
 				filestr << carros[i]->getStandards()[j]->getDuracao() << endl;
 				filestr << carros[i]->getStandards()[j]->getDataInicio()
-																												<< endl;
+																																														<< endl;
 				filestr << carros[i]->getStandards()[j]->getDataFim();
 				if (j != carros[i]->getStandards().size() - 1) {
 					filestr << endl;
@@ -368,12 +438,12 @@ void Empresa::escreveBuses() {
 				if(j==0) filestr << endl;
 				filestr << buses[i]->getStandards()[j]->getNome() << endl;
 				filestr << buses[i]->getStandards()[j]->getDescricao()
-																													<< endl;
+																																															<< endl;
 				filestr << buses[i]->getStandards()[j]->getPreco() << endl;
 				filestr << buses[i]->getStandards()[j]->getDuracao()
-																													<< endl;
+																																															<< endl;
 				filestr << buses[i]->getStandards()[j]->getDataInicio()
-																													<< endl;
+																																															<< endl;
 				filestr << buses[i]->getStandards()[j]->getDataFim();
 
 				if (j != buses[i]->getStandards().size() - 1) {
@@ -407,13 +477,13 @@ void Empresa::escreveCamioes() {
 				if(j==0) filestr << endl;
 				filestr << camioes[i]->getStandards()[j]->getNome() << endl;
 				filestr << camioes[i]->getStandards()[j]->getDescricao()
-																													<< endl;
+																																															<< endl;
 				filestr << camioes[i]->getStandards()[j]->getPreco()
-																													<< endl;
+																																															<< endl;
 				filestr << camioes[i]->getStandards()[j]->getDuracao()
-																													<< endl;
+																																															<< endl;
 				filestr << camioes[i]->getStandards()[j]->getDataInicio()
-																													<< endl;
+																																															<< endl;
 				filestr << camioes[i]->getStandards()[j]->getDataFim();
 				if (j != camioes[i]->getStandards().size() - 1) {
 					filestr << endl;
@@ -454,31 +524,74 @@ void Empresa::escreveStandards() {
 
 ////////////////////////////////Le ficheiros respectivos//////////////////////
 
+
+
+void Empresa::leEmpresasALuguer(){
+
+	fstream ficheiro;
+	string nome,distancia,numVeiculos;
+	string marca,modelo,matricula;
+	int dist, numVeic;
+	ficheiro.open("EmpresasAluguer.txt", ios::in);
+
+	if (ficheiro.is_open()) {
+		while (!ficheiro.eof()) {
+
+			getline(ficheiro, nome);
+			getline(ficheiro, distancia);
+			getline(ficheiro,numVeiculos);
+			dist = atoi(distancia.c_str());
+			numVeic = atoi(numVeiculos.c_str());
+
+			//Criar empresa Aluguer se tiver nome
+			if(!nome.empty()) {
+				EmpresaAluguer * empAlug = new EmpresaAluguer(nome,dist);
+
+				for(int i = 0; i < numVeic; i++) {
+					getline(ficheiro, marca);
+					getline(ficheiro, modelo);
+					getline(ficheiro, matricula);
+
+					Veiculo * veic = new Veiculo(marca,modelo,matricula);
+					empAlug->adicionaVeiculo(veic);
+				}
+
+				addEmpresaAluguer(empAlug);
+			}
+			else {
+				//Avancar no ficheiro
+				getline(ficheiro, marca);
+				getline(ficheiro, modelo);
+				getline(ficheiro, matricula);
+			}
+		}
+	}
+
+}
+
 void Empresa::lePecas(){
 
 	fstream ficheiro;
-		string designacao, loja;
-		string cod, sto;
-		int codigo, stock;
+	string designacao, loja;
+	string cod, sto;
+	int codigo, stock;
 
-		ficheiro.open("Pecas.txt", ios::in);
+	ficheiro.open("Pecas.txt", ios::in);
 
-		if (ficheiro.is_open()) {
-			while (!ficheiro.eof()) {
+	if (ficheiro.is_open()) {
+		while (!ficheiro.eof()) {
 
-				getline(ficheiro, cod);
-				getline(ficheiro, designacao);
-				getline(ficheiro, loja);
-				getline(ficheiro, sto);
-				codigo = atoi(cod.c_str());
-				stock = atoi(sto.c_str());
+			getline(ficheiro, cod);
+			getline(ficheiro, designacao);
+			getline(ficheiro, loja);
+			getline(ficheiro, sto);
+			codigo = atoi(cod.c_str());
+			stock = atoi(sto.c_str());
 
-				Peca p1 = Peca(codigo,designacao,stock,loja);
-				adicionaPeca(p1);
-			}
+			Peca p1 = Peca(codigo,designacao,stock,loja);
+			adicionaPeca(p1);
 		}
-
-
+	}
 
 }
 
@@ -935,7 +1048,7 @@ void Empresa::menu() {
 				do {
 					for (unsigned int i = 0; i < funcionarios.size(); i++) {
 						cout << i + 1 << "   " << funcionarios[i]->getNome()
-																												<< endl;
+																																														<< endl;
 					}
 					cout << "Qual dos funcionarios deseja eliminar?" << endl;
 
@@ -1024,7 +1137,7 @@ void Empresa::menu() {
 				int numeracao, conf;
 				for (unsigned int i = 0; i < funcionarios.size(); i++) {
 					cout << i + 1 << "   " << funcionarios[i]->getNome()
-																											<< endl;
+																																													<< endl;
 				}
 
 				cout << "Qual dos funcionarios deseja examinar?" << endl;
@@ -1203,7 +1316,7 @@ void Empresa::menu() {
 				do {
 					for (unsigned int i = 0; i < clientes.size(); i++) {
 						cout << i + 1 << "   " << clientes[i]->getNome()
-																												<< endl;
+																																														<< endl;
 					}
 
 					cout << "Qual dos clientes deseja eliminar?" << endl;
@@ -1518,7 +1631,7 @@ void Empresa::menu() {
 				do {
 					for (unsigned int i = 0; i < standards.size(); i++) {
 						cout << i + 1 << "  " << standards[i]->getNome()
-																												<< endl;
+																																														<< endl;
 					}
 
 					cout << "Qual o servico que deseja remover?" << endl;
@@ -1686,7 +1799,7 @@ void Empresa::menu() {
 					cout << "Que servico deseja adicionar?" << endl;
 					for (unsigned int i = 0; i < standards.size(); i++) {
 						cout << i + 1 << "  " << standards[i]->getNome()
-																												<< endl;
+																																														<< endl;
 					}
 
 					try {
@@ -1863,6 +1976,7 @@ void Empresa::menu() {
 			cout << "Remover Empresa----------------------1" << endl;
 			cout << "Listar Empresas----------------------2" << endl;
 			cout << "Listar Alugueres---------------------3" << endl;
+			cout << "Adicionar Empresa Aluguer------------4" << endl;
 			cout << "Sair---------------------------------0" << endl;
 
 			getline(cin, opfe);
@@ -1889,9 +2003,41 @@ void Empresa::menu() {
 				pause();
 			}
 			break;
+			case 4: {
+				string nome,distancia,numVei;
+				int dist = 0;
+				int numVeiculos = 0;
+				cout << "Insira o nome da empresa: " << endl;
+				getline(cin,nome);
+				cout << "Insira a distancia a que se situa: " << endl;
+				getline(cin,distancia);
+				cout << "Quantos veiculos deseja adicionar: " << endl;
+				getline(cin,numVei);
+				dist = atoi(distancia.c_str());
+				numVeiculos = atoi(numVei.c_str());
 
+				EmpresaAluguer * novaEmp = new EmpresaAluguer(nome,dist);
+				cout << "Empresa Criada, adicione os seus veiculos" << endl;
 
+				string marca,modelo,matricula;
+				for(int i = 0; i < numVeiculos; i++) {
+					cout << "Insira marca: " << endl;
+					getline(cin,marca);
+					cout << "Insira modelo: " << endl;
+					getline(cin,modelo);
+					cout << "Insira matricula: " << endl;
+					getline(cin,matricula);
 
+					Veiculo * veic = new Veiculo(marca,modelo,matricula);
+					novaEmp->adicionaVeiculo(veic);
+					cout << "Veiculo " << i+1 << " adicionado" << endl;
+				}
+				cout << "Todos os veiculos adicionados" << endl;
+				addEmpresaAluguer(novaEmp);
+				cout << "Empresa adicionada" << endl;
+				pause();
+			}
+			break;
 
 			case 0: {
 
@@ -1903,149 +2049,149 @@ void Empresa::menu() {
 		break;
 
 		case 6: {
-					string opCe;
-					int opC;
+			string opCe;
+			int opC;
 
-					clear();
+			clear();
 
-					cout << "******************Menu Pecas*******************" << endl
-							<< endl;
-					cout << "Adicionar Peca---------------------------1" << endl;
-					cout << "Remover Peca-----------------------------2" << endl;
-					cout << "Modificar Stock--------------------------3" << endl;
-					cout << "Analisar Peca------------------------------4" << endl;
-					cout << "Sair-------------------------------------0" << endl;
+			cout << "******************Menu Pecas*******************" << endl
+					<< endl;
+			cout << "Adicionar Peca---------------------------1" << endl;
+			cout << "Remover Peca-----------------------------2" << endl;
+			cout << "Modificar Stock--------------------------3" << endl;
+			cout << "Analisar Peca------------------------------4" << endl;
+			cout << "Sair-------------------------------------0" << endl;
 
-					getline(cin, opCe);
-					opC = atoi(opCe.c_str());
-
-
-					switch(opC){
-					case 1: {
-						string designacao,sto, loja;
-						int stock;
-
-						cout << "Insira designacao" << endl;
-						getline(cin, designacao);
-
-						cout << "Insira stock" << endl;
-						getline(cin, sto);
-						stock = atoi(sto.c_str());
-
-						cout << "Insira loja" << endl;
-						getline(cin,loja);
-
-						Peca s = Peca(designacao,stock,loja);
-						adicionaPeca(s);
+			getline(cin, opCe);
+			opC = atoi(opCe.c_str());
 
 
-					}break;
+			switch(opC){
+			case 1: {
+				string designacao,sto, loja;
+				int stock;
 
-					case 2:{
-						string op;
-						int opc;
-						Peca p1 = Peca();
-						BSTItrIn<Peca> it(pecas);
-						while (!it.isAtEnd())
-						{
-							cout << it.retrieve().getCodigo() <<	" " << it.retrieve().getDesignacao() << endl;
-							it.advance();
-						}
+				cout << "Insira designacao" << endl;
+				getline(cin, designacao);
 
-						cout << "Qual das pecas deseja remover?" << endl;
-						getline(cin,op);
-						opc=atoi(op.c_str());
+				cout << "Insira stock" << endl;
+				getline(cin, sto);
+				stock = atoi(sto.c_str());
 
+				cout << "Insira loja" << endl;
+				getline(cin,loja);
 
-						BSTItrIn<Peca>itt(pecas);
-
-						while(!itt.isAtEnd()){
-
-							if(itt.retrieve().getCodigo()==opc){
-								p1=itt.retrieve();
-								removePeca(p1);
-							}
-							itt.advance();
-
-						}
-
-					}break;
-
-					case 3:{
-						string op,op2;
-						int opc,opc2;
-						Peca p1 = Peca();
-						BSTItrIn<Peca> it(pecas);
-						while (!it.isAtEnd())
-						{
-							cout << it.retrieve().getCodigo() <<	" " << it.retrieve().getDesignacao() << endl;
-							it.advance();
-						}
-						cout << "Qual das pecas deseja alterar?" << endl;
-						getline(cin,op);
-						opc=atoi(op.c_str());
+				Peca s = Peca(designacao,stock,loja);
+				adicionaPeca(s);
 
 
-						BSTItrIn<Peca>itt(pecas);
-						while(!itt.isAtEnd()){
+			}break;
 
-							if(itt.retrieve().getCodigo()==opc){
-								cout << "Qual o novo stock? " << endl;
-								getline(cin,op2);
-								opc2=atoi(op2.c_str());
-								itt.retrieve().setStock(opc2);
-								break;
-
-							}
-							itt.advance();
-
-						}
-
-					}break;
-
-					case 4:{
-						string op,op2;
-						int opc,opc2;
-						Peca p1 = Peca();
-						BSTItrIn<Peca> it(pecas);
-
-						while (!it.isAtEnd())
-						{
-							cout << it.retrieve().getCodigo() <<	" " << it.retrieve().getDesignacao() << endl;
-							it.advance();
-						}
-						cout << "Qual das pecas deseja analisar?" << endl;
-						getline(cin,op);
-						opc=atoi(op.c_str());
-
-
-						BSTItrIn<Peca>itt(pecas);
-						while(!itt.isAtEnd()){
-
-							if(itt.retrieve().getCodigo()==opc){
-								cout << itt.retrieve() << endl;
-								break;
-
-							}
-							itt.advance();
-
-						}
-
-
-					}
-
-
-
-					}
-
-
-
-
-
-
-					pause();
+			case 2:{
+				string op;
+				int opc;
+				Peca p1 = Peca();
+				BSTItrIn<Peca> it(pecas);
+				while (!it.isAtEnd())
+				{
+					cout << it.retrieve().getCodigo() <<	" " << it.retrieve().getDesignacao() << endl;
+					it.advance();
 				}
-				break;
+
+				cout << "Qual das pecas deseja remover?" << endl;
+				getline(cin,op);
+				opc=atoi(op.c_str());
+
+
+				BSTItrIn<Peca>itt(pecas);
+
+				while(!itt.isAtEnd()){
+
+					if(itt.retrieve().getCodigo()==opc){
+						p1=itt.retrieve();
+						removePeca(p1);
+					}
+					itt.advance();
+
+				}
+
+			}break;
+
+			case 3:{
+				string op,op2;
+				int opc,opc2;
+				Peca p1 = Peca();
+				BSTItrIn<Peca> it(pecas);
+				while (!it.isAtEnd())
+				{
+					cout << it.retrieve().getCodigo() <<	" " << it.retrieve().getDesignacao() << endl;
+					it.advance();
+				}
+				cout << "Qual das pecas deseja alterar?" << endl;
+				getline(cin,op);
+				opc=atoi(op.c_str());
+
+
+				BSTItrIn<Peca>itt(pecas);
+				while(!itt.isAtEnd()){
+
+					if(itt.retrieve().getCodigo()==opc){
+						cout << "Qual o novo stock? " << endl;
+						getline(cin,op2);
+						opc2=atoi(op2.c_str());
+						itt.retrieve().setStock(opc2);
+						break;
+
+					}
+					itt.advance();
+
+				}
+
+			}break;
+
+			case 4:{
+				string op,op2;
+				int opc,opc2;
+				Peca p1 = Peca();
+				BSTItrIn<Peca> it(pecas);
+
+				while (!it.isAtEnd())
+				{
+					cout << it.retrieve().getCodigo() <<	" " << it.retrieve().getDesignacao() << endl;
+					it.advance();
+				}
+				cout << "Qual das pecas deseja analisar?" << endl;
+				getline(cin,op);
+				opc=atoi(op.c_str());
+
+
+				BSTItrIn<Peca>itt(pecas);
+				while(!itt.isAtEnd()){
+
+					if(itt.retrieve().getCodigo()==opc){
+						cout << itt.retrieve() << endl;
+						break;
+
+					}
+					itt.advance();
+
+				}
+
+
+			}
+
+
+
+			}
+
+
+
+
+
+
+			pause();
+		}
+		break;
 
 		case 0: {
 			escreveStandards();
@@ -2054,9 +2200,9 @@ void Empresa::menu() {
 			escreveBuses();
 			escreveCamioes();
 			escreveCarros();
-			cout << "ANTES" << endl;
 			escrevePecas();
-			cout << "DJSFHSFGDFRGJFRGEJTG" << endl;
+			escreveEmpresasAluguer();
+			escreveAlugueres();
 			op = 0;
 		}
 		break;
@@ -4077,10 +4223,10 @@ void Empresa::listarEmpresasAluguer() {
 
 		cout << "Veiculos disponiveis: " << endl;
 		for(it2 = (*it1)->getVeiculos().begin(); it2!=(*it1)->getVeiculos().end();it2++){
-			cout << (*it2)->getMarca() << endl;
+			cout << (*it2)->getMarca() << "  " << (*it2)->getModelo() << "  " << (*it2)->getMatricula() << endl;
 		}
 
-		cout << "Numero veiculos disponiveis: " << (*it1)->getNumVeiculosDisp() << endl;
+		cout << "Numero veiculos disponiveis: " << (*it1)->getNumVeiculosDisp() << endl << endl;
 	}
 
 }

@@ -55,15 +55,15 @@ struct hash {
 class Empresa {
 private:
 
-//hashtable
+	//hashtable
 	tr1::unordered_set<Cliente,hash, eq> inativos;
-//fila de prioridade
+	//fila de prioridade
 	//priority_queue<EmpresaAluguer> * aluguer;
 	list<EmpresaAluguer *> empresas_aluguer;
 	map<Cliente*,Veiculo*> alugueres;
 
 	//bst
-		BST<Peca> pecas;
+	BST<Peca> pecas;
 
 
 	vector<Pessoa*> pessoas;
@@ -344,15 +344,15 @@ public:
 	void distribuiPessoas();
 
 	/**@brief Distribui Veiculos
-		 *
-		 *Coloca todos os objectos dos vectores carros, camioes e bus no vector veiculos
-		 */
+	 *
+	 *Coloca todos os objectos dos vectores carros, camioes e bus no vector veiculos
+	 */
 	void distribuiVeiculos();
 
-/**@brief Adiciona Veiculo a um Funcionario
- *
- *Opcao do menu para atribuir um Veiculo a um Funcionario que o utilizador quiser.
- */
+	/**@brief Adiciona Veiculo a um Funcionario
+	 *
+	 *Opcao do menu para atribuir um Veiculo a um Funcionario que o utilizador quiser.
+	 */
 	void adicionaVeiculoFuncionario();
 
 	/**@brief Remove Veiculo a um Funcionario
@@ -380,6 +380,10 @@ public:
 	void printClienteViaturaAlugada();
 	void listarEmpresasAluguer();
 	void EmpresasAluguerbegin();
+	void leEmpresasALuguer();
+	void escreveEmpresasAluguer();
+	void leAlugueres();
+	void escreveAlugueres();
 	//priority_queue<EmpresaAluguer> * getQueue() const;
 	//void setQueue(priority_queue<EmpresaAluguer> * pq);
 
