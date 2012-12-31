@@ -21,7 +21,8 @@ Empresa::Empresa():pecas(Peca()) {
 	}
 
 
-	leEmpresasALuguer();
+	leEmpresasAluguer();
+	leAlugueres();
 	lePecas();
 	leFuncionarios();
 
@@ -304,6 +305,7 @@ void Empresa::escreveEmpresasAluguer(){
 
 
 void Empresa::escrevePecas(){
+
 	fstream ficheiro;
 	BSTItrIn<Peca> it(pecas);
 	ficheiro.open("Pecas.txt",fstream::out);
@@ -317,7 +319,6 @@ void Empresa::escrevePecas(){
 			ficheiro << it.retrieve().getDesignacao() << endl;
 			ficheiro << it.retrieve().getLoja() << endl;
 			ficheiro << it.retrieve().getStock();
-			cout << getNumPecas() << endl;
 			if(j!=getNumPecas()){
 				ficheiro << endl;
 			}
@@ -368,9 +369,9 @@ void Empresa::escreveFuncionarios() {
 					j++) {
 				ficheiro << endl;
 				ficheiro << funcionarios[i]->getVeiculos()[j]->getMarca()
-																																												<< endl;
+																																														<< endl;
 				ficheiro << funcionarios[i]->getVeiculos()[j]->getMatricula()
-																																												<< endl;
+																																														<< endl;
 				ficheiro << funcionarios[i]->getVeiculos()[j]->getModelo();
 				if (j != funcionarios[i]->getVeiculos().size() - 1) {
 					ficheiro << endl;
@@ -405,7 +406,7 @@ void Empresa::escreveCarros() {
 				filestr << carros[i]->getStandards()[j]->getPreco() << endl;
 				filestr << carros[i]->getStandards()[j]->getDuracao() << endl;
 				filestr << carros[i]->getStandards()[j]->getDataInicio()
-																																														<< endl;
+																																																<< endl;
 				filestr << carros[i]->getStandards()[j]->getDataFim();
 				if (j != carros[i]->getStandards().size() - 1) {
 					filestr << endl;
@@ -438,12 +439,12 @@ void Empresa::escreveBuses() {
 				if(j==0) filestr << endl;
 				filestr << buses[i]->getStandards()[j]->getNome() << endl;
 				filestr << buses[i]->getStandards()[j]->getDescricao()
-																																															<< endl;
+																																																	<< endl;
 				filestr << buses[i]->getStandards()[j]->getPreco() << endl;
 				filestr << buses[i]->getStandards()[j]->getDuracao()
-																																															<< endl;
+																																																	<< endl;
 				filestr << buses[i]->getStandards()[j]->getDataInicio()
-																																															<< endl;
+																																																	<< endl;
 				filestr << buses[i]->getStandards()[j]->getDataFim();
 
 				if (j != buses[i]->getStandards().size() - 1) {
@@ -477,13 +478,13 @@ void Empresa::escreveCamioes() {
 				if(j==0) filestr << endl;
 				filestr << camioes[i]->getStandards()[j]->getNome() << endl;
 				filestr << camioes[i]->getStandards()[j]->getDescricao()
-																																															<< endl;
+																																																	<< endl;
 				filestr << camioes[i]->getStandards()[j]->getPreco()
-																																															<< endl;
+																																																	<< endl;
 				filestr << camioes[i]->getStandards()[j]->getDuracao()
-																																															<< endl;
+																																																	<< endl;
 				filestr << camioes[i]->getStandards()[j]->getDataInicio()
-																																															<< endl;
+																																																	<< endl;
 				filestr << camioes[i]->getStandards()[j]->getDataFim();
 				if (j != camioes[i]->getStandards().size() - 1) {
 					filestr << endl;
@@ -524,9 +525,38 @@ void Empresa::escreveStandards() {
 
 ////////////////////////////////Le ficheiros respectivos//////////////////////
 
+void Empresa::leAlugueres() {
+	fstream ficheiro;
+	string nome,contacto,morada,idCliente;
+	string marca,modelo,matricula,idVeic;
+	int idc,idv;
+	ficheiro.open("Alugueres.txt", ios::in);
+
+	if(ficheiro.is_open()) {
+		while(!ficheiro.eof()) {
+			getline(ficheiro,nome);
+			getline(ficheiro,contacto);
+			getline(ficheiro,morada);
+			getline(ficheiro,idCliente);
+			getline(ficheiro,marca);
+			getline(ficheiro,modelo);
+			getline(ficheiro,matricula);
+			getline(ficheiro,idVeic);
+		}
+
+		idc = atoi(idCliente.c_str());
+		Cliente * cl = new Cliente(nome,contacto,morada,idc);
+		idv = atoi(idVeic.c_str());
+		Veiculo * vc = new Veiculo(marca,modelo,matricula,idv);
+
+		if(!cl->getNome().empty() && !vc->getMarca().empty()) {
+			alugueres.insert(pair<Cliente *,Veiculo *>(cl,vc));
+		}
+	}
+}
 
 
-void Empresa::leEmpresasALuguer(){
+void Empresa::leEmpresasAluguer(){
 
 	fstream ficheiro;
 	string nome,distancia,numVeiculos;
@@ -655,7 +685,7 @@ void Empresa::leFuncionarios() {
 			getline(ficheiro, horasExtrae);
 			getline(ficheiro, temp);
 			tmi = atoi(temp.c_str());
-			for (unsigned int i = 0; i < tmi; i++) {
+			for (int i = 0; i < tmi; i++) {
 				getline(ficheiro, marca);
 				getline(ficheiro, modelo);
 				getline(ficheiro, matricula);
@@ -696,7 +726,7 @@ void Empresa::leCarros() {
 			getline(file, nre);
 			nr = atoi(nre.c_str());
 			id1 = atoi(id.c_str());
-			for (unsigned int i = 0; i < nr; i++) {
+			for (int i = 0; i < nr; i++) {
 				getline(file, nome);
 				getline(file, descricao);
 				getline(file, precoe);
@@ -743,7 +773,7 @@ void Empresa::leBuses() {
 			getline(file, nre);
 			nr = atoi(nre.c_str());
 			id1 = atoi(id.c_str());
-			for (unsigned int i = 0; i < nr; i++) {
+			for (int i = 0; i < nr; i++) {
 				getline(file, nome);
 				getline(file, descricao);
 				getline(file, precoe);
@@ -791,7 +821,7 @@ void Empresa::leCamioes() {
 			getline(file, nre);
 			nr = atoi(nre.c_str());
 			id1 = atoi(id.c_str());
-			for (unsigned int i = 0; i < nr; i++) {
+			for (int i = 0; i < nr; i++) {
 				getline(file, nome);
 				getline(file, descricao);
 				getline(file, precoe);
@@ -860,6 +890,7 @@ void Empresa::menu() {
 		cout << "Servicos----------------------4" << endl;
 		cout << "Empresas Aluguer--------------5" << endl;
 		cout << "Pecas-------------------------6" << endl;
+		cout << "Clientes Inativos-------------7" << endl;
 		cout << "Sair--------------------------0" << endl;
 
 		cout << "Escolha a sua opcao" << endl;
@@ -1048,7 +1079,7 @@ void Empresa::menu() {
 				do {
 					for (unsigned int i = 0; i < funcionarios.size(); i++) {
 						cout << i + 1 << "   " << funcionarios[i]->getNome()
-																																														<< endl;
+																																																<< endl;
 					}
 					cout << "Qual dos funcionarios deseja eliminar?" << endl;
 
@@ -1137,7 +1168,7 @@ void Empresa::menu() {
 				int numeracao, conf;
 				for (unsigned int i = 0; i < funcionarios.size(); i++) {
 					cout << i + 1 << "   " << funcionarios[i]->getNome()
-																																													<< endl;
+																																															<< endl;
 				}
 
 				cout << "Qual dos funcionarios deseja examinar?" << endl;
@@ -1316,7 +1347,7 @@ void Empresa::menu() {
 				do {
 					for (unsigned int i = 0; i < clientes.size(); i++) {
 						cout << i + 1 << "   " << clientes[i]->getNome()
-																																														<< endl;
+																																																<< endl;
 					}
 
 					cout << "Qual dos clientes deseja eliminar?" << endl;
@@ -1631,7 +1662,7 @@ void Empresa::menu() {
 				do {
 					for (unsigned int i = 0; i < standards.size(); i++) {
 						cout << i + 1 << "  " << standards[i]->getNome()
-																																														<< endl;
+																																																<< endl;
 					}
 
 					cout << "Qual o servico que deseja remover?" << endl;
@@ -1799,7 +1830,7 @@ void Empresa::menu() {
 					cout << "Que servico deseja adicionar?" << endl;
 					for (unsigned int i = 0; i < standards.size(); i++) {
 						cout << i + 1 << "  " << standards[i]->getNome()
-																																														<< endl;
+																																																<< endl;
 					}
 
 					try {
@@ -2185,13 +2216,70 @@ void Empresa::menu() {
 			}
 
 
-
-
-
-
 			pause();
 		}
 		break;
+
+		case 7: {
+			clear();
+
+			string esc;
+			int esco;
+			cout << "**************Menu Clientes Inativos*****************"
+					<< endl << endl;
+			cout << "Adicionar Cliente Inativo----------------1" << endl;
+			cout << "Remover Cliente Inativo------------------2" << endl;
+			cout << "Analisar Cliente Inativo-----------------3" << endl;
+			cout << "Alterar Cliente Inactivo-----------------4" << endl;
+			cout << "Sair-------------------------------------0" << endl;
+
+			getline(cin,esc);
+			esco=atoi(esc.c_str());
+
+
+			switch(esco){
+			clear();
+
+			case 1: {
+				string es;
+				int eso;
+
+				for(unsigned int i=0; i<clientes.size(); i++){
+					cout << i << clientes[i]->getNome() << endl;
+
+				}
+				cout << "Qual dos Clientes da sua base de dados deseja definir como inativo?" << endl;
+				getline(cin,es);
+				eso = atoi(es.c_str());
+
+				//TODO Inserir na ash usando o eso (posicao do cliente no vector clientes)
+				pause();
+
+
+			}break;
+
+			case 2:{
+
+				tr1::unordered_set<Cliente,hash, eq>::iterator it;
+
+				for(it=inativos.begin(); it!=inativos.end(); it++){
+					cout << it->getId() << it->getNome() << endl;
+
+				}
+
+
+
+			}
+
+
+			}
+
+
+
+
+
+		}break;
+
 
 		case 0: {
 			escreveStandards();

@@ -117,7 +117,6 @@ public:
 
 
 
-	//	friend ostream& operator<<(ostream &out, const Pessoa &Pess); TODO ver se é preciso
 
 };
 

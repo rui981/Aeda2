@@ -78,18 +78,78 @@ private:
 	vector<Standard *> standards;
 	vector<Servico *> servicos;
 public:
+
+	/** @brief Insere clientes inativos na tabela de dispersao
+	 *
+	 * Adiciona um Cliente que j� conste na base de dados de clientes e que se tenha tornado inativo
+	 *
+	 * @param cl Cliente a ser inserido na tabela de dispersao
+	 */
 	void insereInativos(Cliente cl);
+
+	/** @brief Remove um cliente inativo da tabela de dispersao
+		 *
+		 * Remove um Cliente que esteja como inativo e remove-o da tabela de dispersao
+		 *
+		 * @param cl Cliente a ser removido da tabela de dispersao
+		 */
 	void apagaInativos(Cliente cl);
 
 
 	//bst
+	/** @brief Arvore de pesquisa binaria
+		 *
+		 * Permite aceder a BST com as pecas da oficina
+		 *
+		 * @return BST com as pecas da oficina
+		 */
 	BST<Peca> getPecas() const;
+
+	/** @brief Adiciona Peca
+			 *
+			 * Permite adicionar uma peca a Arvore de pesquisa binaria
+			 *
+			 * @param p1 Endereco da peca a ser adicionada a BST
+			 */
 	void adicionaPeca(const Peca &p1);
+
+	/** @brief Remove Peca
+				 *
+				 * Permite remover uma peca a Arvore de pesquisa binaria
+				 *
+				 * @param p1 Endereco da peca a ser removido a BST
+				 */
 	void removePeca(const Peca &p1);
+
+	/** @brief Altera stock da Peca
+				 *
+				 * Permite alterar o stock de uma peca presente na Arvore de pesquisa binaria
+				 *
+				 * @param p1 Endereco da peca a ser alterada a BST
+				 * @param novoStock Novo valor do parametro stock da peca
+				 */
 	void alteraStock(const Peca &p1,int novoStock);
 
+	/**@brief Le Pecas
+		 *
+		 * Abre o ficheiro pecas.txt e percorre-o ate ao fim adicionando as informacoes do txt como novos objecto a BST
+		 *
+		 */
 	void lePecas();
+
+
+	/**@brief Escreve Buses
+		 *
+		 * Abre o ficheiro pecas.txt e, percorrendo a BST, escreve as pecas para o txt.
+		 *
+		 */
 	void escrevePecas();
+
+	/**@brief Numero de Pecas
+		 *
+		 * @return Inteiro com o valor correspondente ao numero total de diferentes tipos de pecas presentes na BST
+		 *
+		 */
 	int getNumPecas()const;
 
 
@@ -345,34 +405,39 @@ public:
 
 	/**@brief Distribui Veiculos
 	 *
-	 *Coloca todos os objectos dos vectores carros, camioes e bus no vector veiculos
+	 * Coloca todos os objectos dos vectores carros, camioes e bus no vector veiculos
 	 */
 	void distribuiVeiculos();
 
 	/**@brief Adiciona Veiculo a um Funcionario
 	 *
-	 *Opcao do menu para atribuir um Veiculo a um Funcionario que o utilizador quiser.
+	 * Opcao do menu para atribuir um Veiculo a um Funcionario que o utilizador quiser.
 	 */
 	void adicionaVeiculoFuncionario();
 
 	/**@brief Remove Veiculo a um Funcionario
 	 *
-	 *Opcao do menu para remover um Veiculo de um Funcionario que o utilizador quiser.
+	 * Opcao do menu para remover um Veiculo de um Funcionario que o utilizador quiser.
 	 */
 	void removeVeiculoFuncionario();
 
 	/**@brief Remove Servico a um Veiculo
 	 *
-	 *Opcao do menu para remover um Servico de um Veiculo que o utilizador quiser.
+	 * Opcao do menu para remover um Servico de um Veiculo que o utilizador quiser.
 	 */
 	void removeServicoVeiculo();
 
 	/**@brief Lista Servico de Veiculo
 	 *
-	 *Opcao do menu para listar os Servicos que um Veiculo tem.
+	 * Opcao do menu para listar os Servicos que um Veiculo tem.
 	 */
 	void listaVeiculosServicos(Veiculo *v);
 
+	/**@brief Adicionar Empresa de Aluguer
+		 *
+		 * Adiciona uma empresa de aluguer a list empresas_aluguer, mantendo a lista ordenada
+		 * @param emp, empresa de aluguer a ser adicionada a list empresas_aluguer
+		 */
 	void addEmpresaAluguer(EmpresaAluguer * emp);
 	list<EmpresaAluguer *> & getEmpresasAluguer();
 	list<EmpresaAluguer *> & removerEmpresaAluguer(string nome);
@@ -380,12 +445,32 @@ public:
 	void printClienteViaturaAlugada();
 	void listarEmpresasAluguer();
 	void EmpresasAluguerbegin();
-	void leEmpresasALuguer();
+
+	/**@brief Le EmpresasAluguer
+			 *
+			 * Abre o ficheiro EmpresasAluguer.txt e percorre-o ate ao fim adicionando as informacoes do txt como novos objectos a list empresas_aluguer
+			 */
+	void leEmpresasAluguer();
+
+	/**@brief Escreve EmpresasAluguer
+			 *
+			 * Abre o ficheiro EmpresasAluguer.txt e, percorrendo a list empresas_aluguer, escreve-os no txt.
+			 *
+			 */
 	void escreveEmpresasAluguer();
+
+	/**@brief Le Alugueres
+		 *
+		 * Abre o ficheiro Alugueres.txt e percorre-o ate ao fim adicionando as informacoes do txt como novos objectos ao map alugueres
+		 */
 	void leAlugueres();
+
+	/**@brief Escreve Alugueres
+		 *
+		 * Abre o ficheiro Alugueres.txt e, percorrendo o map alugueres , escreve-os no txt.
+		 *
+		 */
 	void escreveAlugueres();
-	//priority_queue<EmpresaAluguer> * getQueue() const;
-	//void setQueue(priority_queue<EmpresaAluguer> * pq);
 
 };
 #endif
